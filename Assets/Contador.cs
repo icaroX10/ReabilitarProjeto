@@ -4,20 +4,24 @@ using UnityEngine;
 
 
 public class Contador : MonoBehaviour {
-    private float cont = 100.0f;
+    private float cont = 30.0f;
     public GameObject contador;
-
-    public void Conta()
+    public bool cond;
+    
+    void Start()
     {
-        if (cont > 0.0f)
-        {
-            cont -= Time.deltaTime;
-            //print(cont);
-        }
+        cond = false;
     }
-
     // Update is called once per frame
     void Update () {
+        if (cond)
+        {
+            if (cont > 0.0f)
+            {
+                cont -= Time.deltaTime;
+            }
+        }
+        
         GetComponent<TextMesh>().text = cont.ToString("f0");
     }
 }

@@ -8,10 +8,12 @@ public class ReadTarget : MonoBehaviour, ITrackableEventHandler
     private TrackableBehaviour mTrackableBehaviour;
 
     private Contador cont;
+    public GameObject contador;
+    public GameObject target;
 
     void Start()
     {
-       cont = gameObject.GetComponent<Contador>();
+       //acont = gameObject.GetComponent<Contador>();
 
         mTrackableBehaviour = GetComponent<TrackableBehaviour>();
         if (mTrackableBehaviour)
@@ -29,16 +31,30 @@ public class ReadTarget : MonoBehaviour, ITrackableEventHandler
         {
             OnTrackingFound();
         }
-        /*
         else
         {
             OnTrackingLost();
-        }*/
+        }
     }
     private void OnTrackingFound()
     {
-        cont.Conta();
-        print("Ta lendo");
+        bool teste = target.GetComponent<ImageTargetScale>().dis;
+        print(teste);
+        if (teste)
+        {
+            print("Entrou no if");
+            contador.GetComponent<Contador>().cond = true;
 
+        }else
+        {
+            contador.GetComponent<Contador>().cond = false;
+        }
+        print("Ta lendo");
+        
+        
+    }
+    private void OnTrackingLost()
+    {
+        contador.GetComponent<Contador>().cond = false;
     }
 }

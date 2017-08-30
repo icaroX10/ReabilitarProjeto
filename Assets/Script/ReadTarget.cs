@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Vuforia;
+
 public class ReadTarget : MonoBehaviour, ITrackableEventHandler
 {
 
@@ -10,6 +12,8 @@ public class ReadTarget : MonoBehaviour, ITrackableEventHandler
     private Contador cont;
     public GameObject contador;
     public GameObject target;
+    public GameObject tela;
+    public Text uiText;
 
     void Start()
     {
@@ -39,22 +43,22 @@ public class ReadTarget : MonoBehaviour, ITrackableEventHandler
     private void OnTrackingFound()
     {
         bool teste = target.GetComponent<ImageTargetScale>().dis;
-        print(teste);
-        if (teste)
-        {
-            print("Entrou no if");
-            contador.GetComponent<Contador>().cond = true;
+        //print(teste);
+        
+        print("Entrou no if");
+        contador.GetComponent<Contador>().cond = true;
+        contador.GetComponent<MeshRenderer>().enabled = true;
+        uiText.GetComponent<TextScript>().textUi.enabled = true;
+        tela.GetComponent<SpriteRenderer>().enabled = true;
 
-        }else
-        {
-            contador.GetComponent<Contador>().cond = false;
-        }
-        print("Ta lendo");
-        
-        
+
+
     }
     private void OnTrackingLost()
     {
+        tela.GetComponent<SpriteRenderer>().enabled = false;
+        contador.GetComponent<MeshRenderer>().enabled = false;
+        uiText.GetComponent<TextScript>().textUi.enabled = false;
         contador.GetComponent<Contador>().cond = false;
     }
 }

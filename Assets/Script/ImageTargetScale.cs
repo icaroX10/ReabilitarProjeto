@@ -8,6 +8,8 @@ public class ImageTargetScale : MonoBehaviour {
     public Transform botL;
     public Transform botR;
 
+    public Transform fake;
+
     public Transform borda;
     public Transform target;
 
@@ -20,15 +22,18 @@ public class ImageTargetScale : MonoBehaviour {
     void Start () {
        print("Largura="+x+"Altura="+y);
         dis = false;
+        fake.transform.position = new Vector3(borda.position.x, target.position.y, target.position.z);
         //borda.position = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, Camera.main.nearClipPlane));
-        
+
     }
-	
+    
+    
+	/*
     public bool distancia(Transform borda,Transform target)
     {
         float dist = Vector3.Distance(borda.position, target.position);
-        //print(dist);
-        if(dist < 5.0f)
+        print(dist);
+        if(dist < 10.0f)
         {
             return  dis = true;
         }else
@@ -36,14 +41,14 @@ public class ImageTargetScale : MonoBehaviour {
             return dis = false;
         }
     }
-
+    */
 	// Update is called once per frame
 	void Update () {
         //Distancia do image target pra borda
         float width = Vector3.Distance(topL.position, topR.position);
         float height = Vector3.Distance(topR.position, botR.position);
 
-        distancia(borda,target);
+        //distancia(borda,target);
         //print("A Largura é "+ width+ "A Altura é " + height);
     }
 }

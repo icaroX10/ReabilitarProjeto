@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 public class Contador : MonoBehaviour {
-    private float cont = 30.0f;
+    public float cont = 30.0f;
     public GameObject contador;
     public bool cond;
     
@@ -20,8 +20,8 @@ public class Contador : MonoBehaviour {
             {
                 cont -= Time.deltaTime;
             }
+            
         }
-        
         GetComponent<TextMesh>().text = cont.ToString("f0");
     }
 }

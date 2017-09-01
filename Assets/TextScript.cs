@@ -6,10 +6,13 @@ using UnityEngine.UI;
 public class TextScript : MonoBehaviour {
 
     public Text textUi;
-
-	// Use this for initialization
-	void Start () {
-        textUi.enabled = false;
+    public string txt;
+    // Use this for initialization
+    void Start () {
+        //textUi.enabled = false;
 	}
-	
+    void Update()
+    {
+        this.GetComponent<Text>().text = txt;
+    }
 }

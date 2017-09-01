@@ -14,6 +14,7 @@ public class ReadTarget : MonoBehaviour, ITrackableEventHandler
     public GameObject target;
     public GameObject tela;
     public Text uiText;
+    bool teste = false;
 
     void Start()
     {
@@ -42,23 +43,33 @@ public class ReadTarget : MonoBehaviour, ITrackableEventHandler
     }
     private void OnTrackingFound()
     {
-        bool teste = target.GetComponent<ImageTargetScale>().dis;
-        //print(teste);
-        
-        print("Entrou no if");
-        contador.GetComponent<Contador>().cond = true;
-        contador.GetComponent<MeshRenderer>().enabled = true;
+            
+        //contador.GetComponent<MeshRenderer>().enabled = true;
         uiText.GetComponent<TextScript>().textUi.enabled = true;
-        tela.GetComponent<SpriteRenderer>().enabled = true;
-
+        //tela.GetComponent<SpriteRenderer>().enabled = true;
+        
 
 
     }
     private void OnTrackingLost()
     {
-        tela.GetComponent<SpriteRenderer>().enabled = false;
-        contador.GetComponent<MeshRenderer>().enabled = false;
+        //tela.GetComponent<SpriteRenderer>().enabled = false;
+        //contador.GetComponent<MeshRenderer>().enabled = false;
         uiText.GetComponent<TextScript>().textUi.enabled = false;
         contador.GetComponent<Contador>().cond = false;
+        contador.GetComponent<Contador>().cont = 30.0f;
+    }
+
+    void Update()
+    {
+        teste = target.GetComponent<ImageTargetScale>().dis;
+        if (teste)
+        {
+            contador.GetComponent<Contador>().cond = true;
+            print("Variavel ta " + teste);
+        }else
+        {
+            contador.GetComponent<Contador>().cond = false;
+        }
     }
 }

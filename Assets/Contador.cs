@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 public class Contador : MonoBehaviour {
-    public float cont = 30.0f;
+    public float cont = 3.0f;
     public GameObject contador;
     public bool cond;
     

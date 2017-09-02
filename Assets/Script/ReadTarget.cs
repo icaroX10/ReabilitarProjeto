@@ -57,7 +57,7 @@ public class ReadTarget : MonoBehaviour, ITrackableEventHandler
         //contador.GetComponent<MeshRenderer>().enabled = false;
         uiText.GetComponent<TextScript>().textUi.enabled = false;
         contador.GetComponent<Contador>().cond = false;
-        contador.GetComponent<Contador>().cont = 30.0f;
+        contador.GetComponent<Contador>().cont = 3.0f;
     }
 
     void Update()

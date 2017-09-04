@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Contador.cs" />
      <Compile Include="Assets\GMscript.cs" />
+     <Compile Include="Assets\MessengerScript.cs" />
      <Compile Include="Assets\Script\CameraSeguirBorda.cs" />
      <Compile Include="Assets\Script\ImageTargetScale.cs" />
      <Compile Include="Assets\Script\ReadTarget.cs" />

@@ -15,6 +15,9 @@ public class GMscript : MonoBehaviour {
 	private bool definido2;
 
 	public TextScript t;
+	public ReadTarget imDetector;
+
+	public TextMesh messenger;
 
 	private float temp;
 
@@ -35,14 +38,19 @@ public class GMscript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(! (definido1 && definido2) )
-			calibraMargens ();
+		if (imDetector.isFound) {
+			if (!(definido1 && definido2))
+				calibraMargens ();
 
-		if (verificaPosicao (CantosDobrado.transform, 20.0f))
-			print ( "Marcador próximo da calibragem DOBRADA!\n" );
-		if (verificaPosicao (CantosEsticado.transform, 20.0f))
-			print ( "Marcador próximo da calibragem ESTICADA!\n" );
-		
+			if (verificaPosicao (CantosDobrado.transform, 20.0f))
+				messenger.text = "Marcador próximo da calibragem DOBRADA!\n";
+			else
+				messenger.text = "\n";
+			if (verificaPosicao (CantosEsticado.transform, 20.0f))
+				messenger.text += "Marcador próximo da calibragem ESTICADA!\n";
+			else
+				messenger.text += "\n";
+		}
 		t.txt = "IT: TL=(" + ImageTarget.transform.GetChild (0).transform.position.x + "," + ImageTarget.transform.GetChild (0).transform.position.y + ") " +
 			"BR=(" + ImageTarget.transform.GetChild (1).transform.position.x + "," + ImageTarget.transform.GetChild (1).transform.position.y + ") \n" +
 

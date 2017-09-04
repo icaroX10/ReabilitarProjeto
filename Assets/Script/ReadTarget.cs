@@ -16,8 +16,11 @@ public class ReadTarget : MonoBehaviour, ITrackableEventHandler
     public Text uiText;
     bool teste = false;
 
-    void Start()
+	public bool isFound;
+
+	void Start()
     {
+		isFound = false;
        //acont = gameObject.GetComponent<Contador>();
 
         mTrackableBehaviour = GetComponent<TrackableBehaviour>();
@@ -43,7 +46,8 @@ public class ReadTarget : MonoBehaviour, ITrackableEventHandler
     }
     private void OnTrackingFound()
     {
-            
+		isFound = true;
+
         //contador.GetComponent<MeshRenderer>().enabled = true;
         uiText.GetComponent<TextScript>().textUi.enabled = true;
         //tela.GetComponent<SpriteRenderer>().enabled = true;
@@ -53,6 +57,8 @@ public class ReadTarget : MonoBehaviour, ITrackableEventHandler
     }
     private void OnTrackingLost()
     {
+		isFound = false;
+
         //tela.GetComponent<SpriteRenderer>().enabled = false;
         //contador.GetComponent<MeshRenderer>().enabled = false;
         uiText.GetComponent<TextScript>().textUi.enabled = false;

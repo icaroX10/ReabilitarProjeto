@@ -10,7 +10,7 @@ public class CameraSeguirBorda : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        transform.position = player.position + offset;
+        //transform.position = player.position + offset;
         //transform.rotation = Quaternion.identity;
     }
 }

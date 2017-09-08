@@ -35,7 +35,8 @@ public class ReadTarget : MonoBehaviour, ITrackableEventHandler
               TrackableBehaviour.Status newStatus)
     {
         if (newStatus == TrackableBehaviour.Status.DETECTED ||
-            newStatus == TrackableBehaviour.Status.TRACKED)
+            newStatus == TrackableBehaviour.Status.TRACKED ||
+			newStatus == TrackableBehaviour.Status.EXTENDED_TRACKED)
         {
             OnTrackingFound();
         }
@@ -61,7 +62,7 @@ public class ReadTarget : MonoBehaviour, ITrackableEventHandler
 
         //tela.GetComponent<SpriteRenderer>().enabled = false;
         //contador.GetComponent<MeshRenderer>().enabled = false;
-        uiText.GetComponent<TextScript>().textUi.enabled = false;
+		uiText.GetComponent<TextScript>().textUi.enabled = false;
         contador.GetComponent<Contador>().cond = false;
         contador.GetComponent<Contador>().cont = 3.0f;
     }

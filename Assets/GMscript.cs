@@ -18,8 +18,26 @@ public class GMscript : MonoBehaviour {
 	public ReadTarget imDetector;
 
 	public TextMesh messenger;
+	private string messengerTxt;
+	private Rect messengerRect;
+	private GUIStyle messengerStyle;
 
 	private float temp;
+
+	private bool calibrarBtn;
+	private bool reiniciarBtn;
+
+	private float recemCalibrado = 0.0f;
+
+	// Textos de output
+	const string texto0 = "Aponte o dispositivo para o marcador!";
+	const string texto1 = "Dobre os braços e toque em calibrar.";
+	const string texto2 = "Estique os braços e toque em calibrar.";
+	const string texto3 = "Calibrado!";
+	const string texto4 = "Aponte para o marcador no. ";
+	const string texto5 = "Descalibrado!";
+	// Fim Textos
+
 
 	//private Transform ImageTargetTransform;
 	//private Transform CantosDobrado
@@ -30,27 +48,45 @@ public class GMscript : MonoBehaviour {
 		definido2 = false;
 
 		// ---------------------------
-		string texto1 = "Aponte o dispositivo para o marcador, dobre os braços e toque na tela.";
 		print (texto1);
+		messengerTxt = texto0;
 		// ---------------------------
 
+		inicializaMessenger ();
 	}
-	
 	// Update is called once per frame
 	void Update () {
+		posicionaMessenger ();
+
+		if (reiniciarBtn)
+			resetarCalibracao ();
+
 		if (imDetector.isFound) {
+
 			if (!(definido1 && definido2))
 				calibraMargens ();
-
-			if (verificaPosicao (CantosDobrado.transform, 20.0f))
-				messenger.text = "Marcador próximo da calibragem DOBRADA!\n";
-			else
-				messenger.text = "\n";
-			if (verificaPosicao (CantosEsticado.transform, 20.0f))
-				messenger.text += "Marcador próximo da calibragem ESTICADA!\n";
-			else
-				messenger.text += "\n";
+			else {
+				if (Time.time < recemCalibrado + 2.0f)
+					messengerTxt = texto3;
+				else {
+					if (verificaPosicao (CantosDobrado.transform, 20.0f))
+						messengerTxt = "Marcador próximo da calibragem DOBRADA!\n";
+					else
+						messengerTxt = "\n";
+					if (verificaPosicao (CantosEsticado.transform, 20.0f))
+						messengerTxt += "Marcador próximo da calibragem ESTICADA!\n";
+					else
+						messengerTxt += "\n";
+				}
+			}
+		} else {
+			if (!(definido1 && definido2))
+				messengerTxt = texto0;
 		}
+
+
+
+		// DEBUGANDO POSICIONAMENTO DO IMTARGET E DOS FAKES
 		t.txt = "IT: TL=(" + ImageTarget.transform.GetChild (0).transform.position.x + "," + ImageTarget.transform.GetChild (0).transform.position.y + ") " +
 			"BR=(" + ImageTarget.transform.GetChild (1).transform.position.x + "," + ImageTarget.transform.GetChild (1).transform.position.y + ") \n" +
 
@@ -61,11 +97,17 @@ public class GMscript : MonoBehaviour {
 			"BR=(" + CantosEsticado.transform.GetChild (1).transform.position.x + "," + CantosEsticado.transform.GetChild (1).transform.position.y + ") \n";
 	}
 
+	void resetarCalibracao(){
+		definido1 = definido2 = false;
+		CantosDobrado.GetComponent<SpawnaCantos> ().zeraCantosPosicoes ();
+		CantosEsticado.GetComponent<SpawnaCantos> ().zeraCantosPosicoes ();
+	}
+
 	void calibraMargens(){
 		if (!definido1) {
+			messengerTxt = texto1;
 
-
-			if (Input.GetMouseButtonDown (0)) {
+			if (calibrarBtn) {
 				CantosDobrado.transform.GetChild (0).transform.position = ImageTarget.transform.GetChild (0).transform.position;
 				CantosDobrado.transform.GetChild (1).transform.position = ImageTarget.transform.GetChild (1).transform.position;
 				temp = Time.time;
@@ -73,23 +115,21 @@ public class GMscript : MonoBehaviour {
 				CantosDobrado.GetComponent<SpawnaCantos> ().setaCantosPosicoes ();
 
 				definido1 = true;
-				// -----------------------
-				string texto2 = "Aponte o dispositivo para o marcador, estique os braços e toque na tela.";
-				print (texto2);
-				// -----------------------
 			}
 
 		}
 
 		if (definido1 && !definido2) {
+			print (texto2);
+			messengerTxt = texto2;
 
-
-			if (Input.GetMouseButtonDown (0) && Time.time > temp + 2.0f) {
-				CantosEsticado.transform.GetChild (0).transform.position = ImageTarget.transform.GetChild (0).transform.position;
-				CantosEsticado.transform.GetChild (1).transform.position = ImageTarget.transform.GetChild (1).transform.position;
-
+			if (calibrarBtn && Time.time > temp + 2.0f) {
+				CantosEsticado.GetComponent<SpawnaCantos> ().setaSEeID (
+					ImageTarget.transform.GetChild (0).transform.position,
+					ImageTarget.transform.GetChild (1).transform.position);
 				CantosEsticado.GetComponent<SpawnaCantos> ().setaCantosPosicoes ();
 
+				recemCalibrado = Time.time;
 				definido2 = true;
 			}
 		}
@@ -109,16 +149,29 @@ public class GMscript : MonoBehaviour {
 		}
 
 		return false;
-
-		/*
-		string ttt = "Top Target = X: " + TopL.x.ToString("f1") + "Borda = X:" + BordaTopL.x.ToString("f1") + "\nTarget = Y:" + TopL.y.ToString("f1") + "Borda = Y:"+ BordaTopL.y.ToString("f1")+ "\nBot Target = X: " + botR.x.ToString("f1") + "Borda = X:" + BordaBotR.x.ToString("f1") + "\nTarget = Y:" + botR.y.ToString("f1") + "Borda = Y:" + BordaBotR.y.ToString("f1");
-
-		t.txt = ttt;
-
-		float width = Vector3.Distance(topL.position, topR.position);
-		 float height = Vector3.Distance(topR.position, botR.position);
-
-		distancia(borda,target);
-		print("A Largura é "+ width+ "A Altura é " + height);*/
 	}
+
+	void OnGUI(){
+		calibrarBtn = GUI.RepeatButton (new Rect (0, 0, 100.0f, 100.0f), "<b>Calibrar</b>");
+		reiniciarBtn = GUI.RepeatButton (new Rect (Screen.width - 100.0f, 0, 100.0f, 100.0f), "<b>Reiniciar</b>");
+		GUI.Label (messengerRect, "<color=white>"+messengerTxt+"</color>", messengerStyle);
+
+
+	}
+
+	void inicializaMessenger(){
+
+		messengerStyle = GUIStyle.none;
+
+		messengerStyle.wordWrap = true;
+		messengerStyle.alignment = TextAnchor.UpperCenter;
+
+		posicionaMessenger ();
+	}
+	void posicionaMessenger(){
+		messengerStyle.fontSize = (int) (Screen.height*0.08f);
+		float alt = messengerStyle.lineHeight;
+		messengerRect = new Rect (0, Screen.height - 2*alt, Screen.width, 2*alt);
+	}
+
 }

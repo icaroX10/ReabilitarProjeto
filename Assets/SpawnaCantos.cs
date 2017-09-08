@@ -9,6 +9,8 @@ public class SpawnaCantos : MonoBehaviour {
 	public GameObject CantoIE;
 	public GameObject CantoID;
 
+	public Camera cam;
+
 	private Vector3 SupEsq;
 	private Vector3 InfDir;
 
@@ -20,10 +22,32 @@ public class SpawnaCantos : MonoBehaviour {
 	void Update () {
 	}
 
+	public void setaSEeID(Vector3 se, Vector3 id){
+		transform.GetChild (0).transform.position = se;
+		transform.GetChild (1).transform.position = id;
+	}
+
+
 	public void setaCantosPosicoes(){
 		SupEsq = transform.GetChild (0).transform.position;
 		InfDir = transform.GetChild (1).transform.position;
-		float zMedio = (SupEsq.z + InfDir.z) / 2;
+
+		Vector3 screenSE = cam.WorldToScreenPoint (SupEsq);
+		Vector3 screenID = cam.WorldToScreenPoint (InfDir);
+
+		// OBS: Isso só funciona se a câmera não estiver rotacionada!
+		float width = Mathf.Abs (screenSE.x - screenID.x);
+		float height = Mathf.Abs (screenSE.y - screenID.y);
+		float zMedio = (screenSE.z + screenID.z) / 2;
+		// FIM OBS: Isso só funciona se a câmera não estiver rotacionada!
+
+		setaSEeID (
+			cam.ScreenToWorldPoint(new Vector3(Screen.width/2-width/2,Screen.height/2+height/2, zMedio)),
+			cam.ScreenToWorldPoint(new Vector3(Screen.width/2+width/2,Screen.height/2-height/2, zMedio))
+		);
+
+		SupEsq = transform.GetChild (0).transform.position;
+		InfDir = transform.GetChild (1).transform.position;
 
 		CantoSE.transform.position = new Vector3 ( SupEsq.x, SupEsq.y, zMedio );
 		CantoSD.transform.position = new Vector3 ( InfDir.x, SupEsq.y, zMedio );
@@ -32,5 +56,15 @@ public class SpawnaCantos : MonoBehaviour {
 
 
 
+	}
+
+	void centralizaPosicoes(){
+	}
+
+	public void zeraCantosPosicoes(){
+		CantoSE.transform.position = Vector3.zero;
+		CantoSD.transform.position = Vector3.zero;
+		CantoID.transform.position = Vector3.zero;
+		CantoIE.transform.position = Vector3.zero;
 	}
 }

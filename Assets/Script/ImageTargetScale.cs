@@ -25,6 +25,8 @@ public class ImageTargetScale : MonoBehaviour {
 
     public bool dis;
 
+	public float closer;
+
     // Use this for initialization
     void Start () {
        //print("Largura="+x+"Altura="+y);

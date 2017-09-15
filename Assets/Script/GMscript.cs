@@ -11,6 +11,12 @@ public class GMscript : MonoBehaviour {
 	public GameObject CantosEsticado;
 	//public GameObject Stdout;
 
+	public GameObject frisbe;
+	private GameObject frisbeGO;
+	private frisbeScript frisbeScrpt;
+
+	//private ImageTargetScale imTargetScript;
+
 	private bool definido1;
 	private bool definido2;
 
@@ -29,6 +35,7 @@ public class GMscript : MonoBehaviour {
 
 	private float recemCalibrado = 0.0f;
 
+
 	// Textos de output
 	const string texto0 = "Aponte o dispositivo para o marcador!";
 	const string texto1 = "Dobre os braços e toque em calibrar.";
@@ -44,11 +51,13 @@ public class GMscript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		//imTargetScript = ImageTarget.GetComponent<ImageTargetScale> ();
+
 		definido1 = false;
 		definido2 = false;
 
 		// ---------------------------
-		print (texto1);
+		//print (texto1);
 		messengerTxt = texto0;
 		// ---------------------------
 
@@ -69,14 +78,19 @@ public class GMscript : MonoBehaviour {
 				if (Time.time < recemCalibrado + 2.0f)
 					messengerTxt = texto3;
 				else {
-					if (verificaPosicao (CantosDobrado.transform, 20.0f))
+					if(!frisbeGO)
+						criaFrisbe ();
+
+					if (verificaPosicao (CantosDobrado.transform, 20.0f)) {
 						messengerTxt = "Marcador próximo da calibragem DOBRADA!\n";
-					else
+					} else {
 						messengerTxt = "\n";
-					if (verificaPosicao (CantosEsticado.transform, 20.0f))
+					} if (verificaPosicao (CantosEsticado.transform, 20.0f)) {
 						messengerTxt += "Marcador próximo da calibragem ESTICADA!\n";
-					else
+						frisbeScrpt.arremessar ();
+					} else {
 						messengerTxt += "\n";
+					}
 				}
 			}
 		} else {
@@ -84,10 +98,12 @@ public class GMscript : MonoBehaviour {
 				messengerTxt = texto0;
 		}
 
+		if (frisbeGO)
+			frisbeScrpt.isActive = imDetector.isFound;
 
 
 		// DEBUGANDO POSICIONAMENTO DO IMTARGET E DOS FAKES
-		t.txt = "IT: TL=(" + ImageTarget.transform.GetChild (0).transform.position.x + "," + ImageTarget.transform.GetChild (0).transform.position.y + ") " +
+		t.txt = "";/* "IT: TL=(" + ImageTarget.transform.GetChild (0).transform.position.x + "," + ImageTarget.transform.GetChild (0).transform.position.y + ") " +
 			"BR=(" + ImageTarget.transform.GetChild (1).transform.position.x + "," + ImageTarget.transform.GetChild (1).transform.position.y + ") \n" +
 
 			"CD: TL=(" + CantosDobrado.transform.GetChild (0).transform.position.x + "," + CantosDobrado.transform.GetChild (0).transform.position.y + ") " +
@@ -95,12 +111,15 @@ public class GMscript : MonoBehaviour {
 
 			"CE: TL=(" + CantosEsticado.transform.GetChild (0).transform.position.x + "," + CantosEsticado.transform.GetChild (0).transform.position.y + ") " +
 			"BR=(" + CantosEsticado.transform.GetChild (1).transform.position.x + "," + CantosEsticado.transform.GetChild (1).transform.position.y + ") \n";
+			*/
 	}
 
 	void resetarCalibracao(){
 		definido1 = definido2 = false;
 		CantosDobrado.GetComponent<SpawnaCantos> ().zeraCantosPosicoes ();
 		CantosEsticado.GetComponent<SpawnaCantos> ().zeraCantosPosicoes ();
+		if(frisbeGO)
+			Destroy (frisbeGO.gameObject);
 	}
 
 	void calibraMargens(){
@@ -120,7 +139,7 @@ public class GMscript : MonoBehaviour {
 		}
 
 		if (definido1 && !definido2) {
-			print (texto2);
+			//print (texto2);
 			messengerTxt = texto2;
 
 			if (calibrarBtn && Time.time > temp + 2.0f) {
@@ -144,10 +163,9 @@ public class GMscript : MonoBehaviour {
 		Vector3 im1 = cam.WorldToScreenPoint (ImageTarget.transform.GetChild (1).transform.position);
 
 		if (Vector3.Distance (child0, im0) < distancia &&
-		    Vector3.Distance (child1, im1) < distancia) {
+			Vector3.Distance (child1, im1) < distancia) {
 			return true;
 		}
-
 		return false;
 	}
 
@@ -172,6 +190,16 @@ public class GMscript : MonoBehaviour {
 		messengerStyle.fontSize = (int) (Screen.height*0.08f);
 		float alt = messengerStyle.lineHeight;
 		messengerRect = new Rect (0, Screen.height - 2*alt, Screen.width, 2*alt);
+	}
+
+	void criaFrisbe(){
+		frisbeGO = Instantiate (frisbe,Vector3.zero, Quaternion.identity) as GameObject;
+		frisbeScrpt = frisbeGO.GetComponent<frisbeScript> ();
+
+		frisbeScrpt.cam = cam;
+		frisbeScrpt.cantosVerde = CantosDobrado;
+		frisbeScrpt.cantosVermelho = CantosEsticado;
+		frisbeScrpt.imTarget = ImageTarget;
 	}
 
 }

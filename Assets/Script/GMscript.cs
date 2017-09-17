@@ -6,6 +6,8 @@ public class GMscript : MonoBehaviour {
 
 	public Camera cam;
 
+	public GameObject Kitten;
+
 	public GameObject ImageTarget;
 	public GameObject CantosDobrado;
 	public GameObject CantosEsticado;
@@ -200,6 +202,7 @@ public class GMscript : MonoBehaviour {
 		frisbeScrpt.cantosVerde = CantosDobrado;
 		frisbeScrpt.cantosVermelho = CantosEsticado;
 		frisbeScrpt.imTarget = ImageTarget;
+		frisbeScrpt.kitten = Kitten;
 	}
 
 }

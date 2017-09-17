@@ -11,6 +11,8 @@ public class frisbeScript : MonoBehaviour {
 
 	public Camera cam;
 
+	public GameObject kitten;
+
 	public bool isActive;
 	public bool isTrowed;
 
@@ -33,12 +35,13 @@ public class frisbeScript : MonoBehaviour {
 		posInicialFrisbe = new Vector3 (0, -0.5f, 1);
 		frisbeGO.transform.position = posInicialFrisbe;
 		//posFinalFrisbe = new Vector3 ();
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		//this.transform.LookAt (imTarget.transform.position);
-		destroiAposTarget();
+		atingeTarget();
 
 		if (isActive) {
 			if (isTrowed) {
@@ -89,7 +92,7 @@ public class frisbeScript : MonoBehaviour {
 		//this.GetComponent<Rigidbody> ().useGravity = true;
 
 		//this.GetComponent<Rigidbody> ().AddForce (new Vector3(0,15.0f,15.0f) * 10.0f, ForceMode.Acceleration);
-		this.GetComponent<Rigidbody> ().AddForce (Vector3.forward * 13.0f, ForceMode.Acceleration);
+		this.GetComponent<Rigidbody> ().AddForce (Vector3.forward * 30.0f, ForceMode.Acceleration);
 
 	}
 
@@ -99,9 +102,10 @@ public class frisbeScript : MonoBehaviour {
 		this.transform.LookAt(imTarget.transform.position);
 	}
 
-	public void destroiAposTarget(){
+	public void atingeTarget(){
 		if(frisbeGO.transform.position.z > imTarget.transform.position.z){
 			Destroy (frisbeGO.gameObject);
+			kitten.GetComponent<KittenScript> ().setaAnimation ("Meow");					
 		}
 	}
 }

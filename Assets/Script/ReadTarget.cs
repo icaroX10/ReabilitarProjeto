@@ -10,10 +10,10 @@ public class ReadTarget : MonoBehaviour, ITrackableEventHandler
     private TrackableBehaviour mTrackableBehaviour;
 
     private Contador cont;
-    public GameObject contador;
+    //public GameObject contador;
     public GameObject target;
-    public GameObject tela;
-    public Text uiText;
+    //public GameObject tela;
+    //public Text uiText;
     bool teste = false;
 
 	public bool isFound;
@@ -50,7 +50,7 @@ public class ReadTarget : MonoBehaviour, ITrackableEventHandler
 		isFound = true;
 
         //contador.GetComponent<MeshRenderer>().enabled = true;
-        uiText.GetComponent<TextScript>().textUi.enabled = true;
+        //uiText.GetComponent<TextScript>().textUi.enabled = true;
         //tela.GetComponent<SpriteRenderer>().enabled = true;
         
 
@@ -62,9 +62,9 @@ public class ReadTarget : MonoBehaviour, ITrackableEventHandler
 
         //tela.GetComponent<SpriteRenderer>().enabled = false;
         //contador.GetComponent<MeshRenderer>().enabled = false;
-		uiText.GetComponent<TextScript>().textUi.enabled = false;
-        contador.GetComponent<Contador>().cond = false;
-        contador.GetComponent<Contador>().cont = 3.0f;
+		//uiText.GetComponent<TextScript>().textUi.enabled = false;
+        //contador.GetComponent<Contador>().cond = false;
+        //contador.GetComponent<Contador>().cont = 3.0f;
     }
 
     void Update()
@@ -72,11 +72,11 @@ public class ReadTarget : MonoBehaviour, ITrackableEventHandler
         teste = target.GetComponent<ImageTargetScale>().dis;
         if (teste)
         {
-            contador.GetComponent<Contador>().cond = true;
+            //contador.GetComponent<Contador>().cond = true;
             print("Variavel ta " + teste);
         }else
         {
-            contador.GetComponent<Contador>().cond = false;
+            //contador.GetComponent<Contador>().cond = false;
         }
     }
 }

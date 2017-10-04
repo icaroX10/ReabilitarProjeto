@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GMscript : MonoBehaviour {
 
@@ -34,8 +35,11 @@ public class GMscript : MonoBehaviour {
 
 	private bool calibrarBtn;
 	private bool reiniciarBtn;
+	private bool exitBtn;
 
 	private float recemCalibrado = 0.0f;
+
+	private bool salvo;
 
 
 	// Textos de output
@@ -58,6 +62,9 @@ public class GMscript : MonoBehaviour {
 		definido1 = false;
 		definido2 = false;
 
+		salvo = false;
+		exitBtn = false;
+
 		// ---------------------------
 		//print (texto1);
 		messengerTxt = texto0;
@@ -65,8 +72,12 @@ public class GMscript : MonoBehaviour {
 
 		inicializaMessenger ();
 	}
+
 	// Update is called once per frame
 	void Update () {
+		if (exitBtn)
+			voltarMenuPrincipal ();
+
 		posicionaMessenger ();
 
 		if (reiniciarBtn)
@@ -93,6 +104,9 @@ public class GMscript : MonoBehaviour {
 					} else {
 						messengerTxt += "\n";
 					}
+
+					if (!salvo)
+						salvarCalibragem ();
 				}
 			}
 		} else {
@@ -175,8 +189,8 @@ public class GMscript : MonoBehaviour {
 		calibrarBtn = GUI.RepeatButton (new Rect (0, 0, 100.0f, 100.0f), "<b>Calibrar</b>");
 		reiniciarBtn = GUI.RepeatButton (new Rect (Screen.width - 100.0f, 0, 100.0f, 100.0f), "<b>Reiniciar</b>");
 		GUI.Label (messengerRect, "<color=white>"+messengerTxt+"</color>", messengerStyle);
-
-
+	
+		exitBtn = GUI.RepeatButton (new Rect (Screen.width - 100.0f, Screen.height - 100.0f, 100.0f, 100.0f), "<b>Sair</b>");
 	}
 
 	void inicializaMessenger(){
@@ -205,4 +219,25 @@ public class GMscript : MonoBehaviour {
 		frisbeScrpt.kitten = Kitten;
 	}
 
+	void salvarCalibragem(){
+		// Salvando CSE
+		salvarXYZCantos("SEEsticado", CantosEsticado.transform.GetChild (0).transform.position);
+		salvarXYZCantos("IDEsticado", CantosEsticado.transform.GetChild (1).transform.position);
+		salvarXYZCantos("SEDobrado", CantosDobrado.transform.GetChild (0).transform.position);
+		salvarXYZCantos("IDDobrado", CantosDobrado.transform.GetChild (1).transform.position);
+
+		PlayerPrefs.Save ();
+		salvo = true;
+		print ("Configuracoes salvas!\n");
+	}
+
+	void salvarXYZCantos(string nome ,Vector3 position){
+		PlayerPrefs.SetFloat ( nome+".x", position.x );
+		PlayerPrefs.SetFloat ( nome+".y", position.y );
+		PlayerPrefs.SetFloat ( nome+".z", position.z );
+	}
+
+	void voltarMenuPrincipal(){
+		SceneManager.LoadSceneAsync ("menuInicial");
+	}
 }

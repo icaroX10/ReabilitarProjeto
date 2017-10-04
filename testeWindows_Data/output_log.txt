@@ -1,0 +1,99 @@
+Initialize engine version: 5.6.2f1 (a2913c821e27)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA Quadro K600 (ID=0xffa)
+    Vendor:   NVIDIA
+    VRAM:     972 MB
+    Driver:   9.18.13.3182
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\hpcsenai\Documents\GitHub\ReabilitarProjeto2\testeWindows_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\hpcsenai\Documents\GitHub\ReabilitarProjeto2\testeWindows_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\hpcsenai\Documents\GitHub\ReabilitarProjeto2\testeWindows_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\hpcsenai\Documents\GitHub\ReabilitarProjeto2\testeWindows_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\hpcsenai\Documents\GitHub\ReabilitarProjeto2\testeWindows_Data\Managed\Assembly-UnityScript-firstpass.dll (this message is harmless)
+Loading C:\Users\hpcsenai\Documents\GitHub\ReabilitarProjeto2\testeWindows_Data\Managed\Assembly-UnityScript-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Users\hpcsenai\Documents\GitHub\ReabilitarProjeto2\testeWindows_Data\Managed\Assembly-UnityScript.dll (this message is harmless)
+Loading C:\Users\hpcsenai\Documents\GitHub\ReabilitarProjeto2\testeWindows_Data\Managed\Assembly-UnityScript.dll into Unity Child Domain
+Platform assembly: C:\Users\hpcsenai\Documents\GitHub\ReabilitarProjeto2\testeWindows_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\hpcsenai\Documents\GitHub\ReabilitarProjeto2\testeWindows_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\hpcsenai\Documents\GitHub\ReabilitarProjeto2\testeWindows_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\hpcsenai\Documents\GitHub\ReabilitarProjeto2\testeWindows_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\hpcsenai\Documents\GitHub\ReabilitarProjeto2\testeWindows_Data\Managed\Vuforia.UnityExtensions.dll (this message is harmless)
+Loading C:\Users\hpcsenai\Documents\GitHub\ReabilitarProjeto2\testeWindows_Data\Managed\Vuforia.UnityExtensions.dll into Unity Child Domain
+- Completed reload, in  0.024 seconds
+Platform assembly: C:\Users\hpcsenai\Documents\GitHub\ReabilitarProjeto2\testeWindows_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\hpcsenai\Documents\GitHub\ReabilitarProjeto2\testeWindows_Data\Managed\System.dll (this message is harmless)
+OnLevelWasLoaded was found on VuforiaAbstractBehaviour
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+ 
+(Filename:  Line: 376)
+
+OnLevelWasLoaded was found on VuforiaBehaviour
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+ 
+(Filename:  Line: 376)
+
+desktop: 2560x1600 60Hz; virtual: 2560x1600 at 0,0
+<RI> Initializing input.
+XInput1_3.dll not found. Trying XInput9_1_0.dll instead...
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 2.850118 ms
+Setting BehaviourComponentFactory
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Vuforia initialization successful
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Trackable stadium lost
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Could not initialize the tracker.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+SetHint
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+SetHint
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+SetHint
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Dataset DemoThirdGun could not be loaded and cannot be activated.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Dataset teste could not be loaded and cannot be activated.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+StartVuforia
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Creating a Mono Camera Configuration (Check for reflection)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 1580 -> priority: 1 
+  Thread -> id: aa0 -> priority: 1 
+StopVuforia
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Trackable stadium lost
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+

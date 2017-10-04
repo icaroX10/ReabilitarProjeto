@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/scene/base.unity
+- path: Assets/scene/jogar.unity
   isLoaded: 1
   isActive: 1

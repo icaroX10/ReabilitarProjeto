@@ -14,6 +14,8 @@ public class menuPrincipalScript : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
+
+    /*
 	void Update () {
 		if (jogar)
 			SceneManager.LoadSceneAsync ("jogar");
@@ -29,5 +31,16 @@ public class menuPrincipalScript : MonoBehaviour {
 		//GUI.Label (messengerRect, "<color=white>"+messengerTxt+"</color>", messengerStyle);
 
 	}
+    */
+
+    public void Jogar()
+    {
+        SceneManager.LoadSceneAsync("jogar");
+    }
+
+    public void Calibrar()
+    {
+        SceneManager.LoadSceneAsync("base");
+    }
 
 }

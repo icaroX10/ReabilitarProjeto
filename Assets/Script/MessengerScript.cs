@@ -4,21 +4,42 @@ using UnityEngine;
 
 public class MessengerScript : MonoBehaviour {
 
-	public Camera cam;
+	public string messengerTxt;
+	private Rect messengerRect;
+	public GUIStyle messengerStyle;
+	private int modo = -1;
 
 	// Use this for initialization
 	void Start () {
-		// TODO: Verificar por que esse próprio objeto não está com sua posição modificando
-		float width = Screen.width;
-		float height = Screen.height;
-
-		Vector3 novaPosicao = new Vector3 ( width/2, 25, 0 );
-
-		transform.position = cam.ScreenToWorldPoint (novaPosicao);
+		messengerTxt = "";
+		//inicializaMessenger ();
+		//posicionaMessenger ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
 	}
+
+	void OnGUI(){
+		//if(messengerRect)
+		GUI.Label (messengerRect, messengerTxt, messengerStyle);
+	}
+
+	void inicializaMessenger(){
+		messengerStyle = GUIStyle.none;
+		messengerStyle.wordWrap = true;
+		messengerStyle.alignment = TextAnchor.UpperCenter;
+		messengerStyle.fontSize = (int) (Screen.height*0.08f);
+	}
+
+	public void InsereRect(Rect rectangle){
+		inicializaMessenger ();
+		messengerRect = rectangle;
+	}
+
+	public void InsereRectLinhas(float a, float b, float larg, float linhas){
+		inicializaMessenger ();
+		messengerRect = new Rect(a, b - linhas *messengerStyle.lineHeight, larg, linhas*messengerStyle.lineHeight);
+	}
+
 }

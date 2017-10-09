@@ -40,7 +40,7 @@ public class menuPrincipalScript : MonoBehaviour {
 
     public void Calibrar()
     {
-        SceneManager.LoadSceneAsync("base");
+        SceneManager.LoadSceneAsync("calibragem");
     }
 
 }

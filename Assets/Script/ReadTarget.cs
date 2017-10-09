@@ -9,7 +9,6 @@ public class ReadTarget : MonoBehaviour, ITrackableEventHandler
 
     private TrackableBehaviour mTrackableBehaviour;
 
-    private Contador cont;
     //public GameObject contador;
     public GameObject target;
     //public GameObject tela;

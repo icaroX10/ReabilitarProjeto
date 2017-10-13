@@ -67,7 +67,7 @@ public class ReadTarget : MonoBehaviour, ITrackableEventHandler
     }
 
     void Update()
-    {
+    {/*
         teste = target.GetComponent<ImageTargetScale>().dis;
         if (teste)
         {
@@ -76,6 +76,6 @@ public class ReadTarget : MonoBehaviour, ITrackableEventHandler
         }else
         {
             //contador.GetComponent<Contador>().cond = false;
-        }
+        }*/
     }
 }

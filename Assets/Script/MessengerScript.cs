@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class MessengerScript : MonoBehaviour {
 
-	public string messengerTxt;
+	public string messengerTxt = "";
 	private Rect messengerRect;
 	public GUIStyle messengerStyle;
 	private int modo = -1;
 
 	// Use this for initialization
 	void Start () {
-		messengerTxt = "";
 		//inicializaMessenger ();
 		//posicionaMessenger ();
 	}

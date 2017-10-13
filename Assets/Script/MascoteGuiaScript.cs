@@ -35,7 +35,8 @@ public class MascoteGuiaScript : MonoBehaviour {
 	}
 
 	public void ApontarMarcador(int index){
-		messenger.messengerTxt = texto0 + "<color=red>"+nomesMarcadores[index]+"</color>";
+		if(index < nomesMarcadores.Count)
+			messenger.messengerTxt = texto0 + "<color=red>"+nomesMarcadores[index]+"</color>";
 	}
 
 }

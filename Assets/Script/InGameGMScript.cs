@@ -24,10 +24,16 @@ public class InGameGMScript : MonoBehaviour
 	private frisbeScript frisbeScrpt;
 
 	private bool exitBtn = false;
+	private bool circuitoImpossivel = false;
+
+	private bool bracoDobrado = true;
+	private bool bracoEsticado = false;
+
+	private int ultimoMarcador = -1;
 
 	// Use this for initialization
 	void Start () {
-		listaIMTargetScript = listaPai.gameObject.GetComponent<ListaImTargetsScript> ();
+		listaIMTargetScript = listaPai.gameObject.GetComponent<ListaImTargetsScript> (); listaIMTargetScript.Iniciailizar ();
 		messenger = gameObject.AddComponent<MessengerScript> ();
 		gerenciadorCircuito = gameObject.AddComponent<GerenciadorCircuitoScript> ();
 		salvador = gameObject.AddComponent<SalvaDadosEntreScenes> ();
@@ -42,7 +48,10 @@ public class InGameGMScript : MonoBehaviour
 		salvador.SalvarNomesMarcadores (y);
 		// FIM: Deletar quando implementar o substituto ------
 
-
+		// Checando se existe o circuito
+		if (!listaIMTargetScript.ChecaSeExisteOCircuito (salvador.LerCircuito ()))
+			CircuitoInexistente ();
+		// FIM: Checando se existe o circuito
 
 		messenger.InsereRect (new Rect(0, 0, Screen.width, Screen.height/4.0f));
 		gerenciadorCircuito.InsereCircuito (salvador.LerCircuito());
@@ -50,29 +59,44 @@ public class InGameGMScript : MonoBehaviour
 
 		mascoteGuia.InsereNomesMarcadores (salvador.LerNomesMarcadores());
 
-		imDetector = listaIMTargetScript.Listar()[0].gameObject.GetComponent<ReadTarget> ();
+		imDetector = listaIMTargetScript.LerReadTarget (0);
 
-		identificaJeb.InsereImTarget (listaIMTargetScript.Listar()[0].gameObject);
+		identificaJeb.InsereImTarget (listaIMTargetScript.Get(0).gameObject);
 		identificaJeb.InsereCamera (cam);
-		identificaJeb.SetaDimensaoPJeb (salvador.LerDimensao());
+		identificaJeb.SetaDimensaoPJeb (salvador.LerDimensaoMin(), salvador.LerDimensaoMax());
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (exitBtn)
 			voltarMenuPrincipal ();
+		if (circuitoImpossivel)
+			return;
 
 		if (gerenciadorCircuito.TemProximo ()) {
-			listaIMTargetScript.AtivaTarget (gerenciadorCircuito.MarcadorAtual ());
+			if (ultimoMarcador != gerenciadorCircuito.MarcadorAtual ()) {
+				print ("Estamos no marcador no: " + gerenciadorCircuito.MarcadorAtual ());
+				listaIMTargetScript.AtivaTarget (gerenciadorCircuito.MarcadorAtual ());
+				mascoteGuia.ApontarMarcador (gerenciadorCircuito.MarcadorAtual ());
+				imDetector = listaIMTargetScript.LerReadTarget (gerenciadorCircuito.MarcadorAtual ());
+				identificaJeb.InsereImTarget (listaIMTargetScript.Get(gerenciadorCircuito.MarcadorAtual ()).gameObject);
+				ultimoMarcador = gerenciadorCircuito.MarcadorAtual ();
+			}
+
 			if (imDetector.isFound) {
 				mascoteGuia.Ativador (false);
-				if (identificaJeb.EsticouBraco ()) {
+				if (!bracoEsticado && (bracoEsticado = identificaJeb.EsticouBraco ())) {
+					print ("ENTROU BRACO ESTICADO");
+					bracoDobrado = !bracoEsticado;
+				}else if(!bracoDobrado && (bracoDobrado = identificaJeb.DobrouBraco())){
+					print ("ENTROU BRACO DOBRADO");
 					gerenciadorCircuito.AvancarPasso ();
-					print ("AVANÇOU PASSO");
+
+					bracoEsticado = !bracoDobrado;
 				}
 			}else
 				mascoteGuia.Ativador (true);
-			mascoteGuia.ApontarMarcador (gerenciadorCircuito.MarcadorAtual ());
+			
 		} else {
 			mascoteGuia.Ativador (false);
 		}
@@ -100,5 +124,12 @@ public class InGameGMScript : MonoBehaviour
 		frisbeScrpt.imTarget = ImageTarget;
 		frisbeScrpt.kitten = Kitten;
 	}*/
+
+	private void CircuitoInexistente(){
+		messenger.messengerTxt = "<color=white>O circuito inserido é impossível!\nSaia e reinsira o circuito!!!</color>";
+		circuitoImpossivel = true;
+		print ("Circuito impossivel!");
+	}
+
 }
 

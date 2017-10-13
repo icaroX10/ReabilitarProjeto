@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class ListaImTargetsScript : MonoBehaviour {
 
-	private int lastActive;
+	private int lastActive = 0;
 	private List<Transform> lista;
 
 	void Start(){
+		
+	}
+
+	public void Iniciailizar(){
 		lista = Listar ();
 		foreach(Transform go in lista){
 			go.gameObject.SetActive (false);
@@ -26,13 +30,17 @@ public class ListaImTargetsScript : MonoBehaviour {
 	}
 
 	public Transform Get(int index){
-		return lista [index];
+		if(index < lista.Count)
+			return lista [index];
+		return null;
 	}
 
 	public void AtivaTarget(int index){
 		if (index == lastActive)
 			return;
-		ativaTarget (index);
+
+		if(index < transform.childCount)
+			ativaTarget (index);
 	}
 
 	private void ativaTarget(int index){
@@ -41,4 +49,18 @@ public class ListaImTargetsScript : MonoBehaviour {
 		lastActive = index;
 	}
 
+	public ReadTarget LerReadTarget(int index){
+		print ("Lendo Image Target no.: "+index);
+		if (index < lista.Count)
+			return Get (index).gameObject.GetComponent<ReadTarget> ();
+		return null;
+	}
+
+	public bool ChecaSeExisteOCircuito(List<int> circuito){
+		foreach(int i in circuito){
+			if (i < 0 || i >= lista.Count)
+				return false;
+		}
+		return true;
+	}
 }

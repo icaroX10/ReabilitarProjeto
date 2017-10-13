@@ -59,11 +59,17 @@ public class SalvaDadosEntreScenes : MonoBehaviour
 		return new Vector3 (x, y, z);
 	}
 
-	public float LerDimensao(){
+	public float LerDimensaoMax(){
 		Vector3 seEsticado = leXYZCantos("SEEsticado");
 		Vector3 idEsticado = leXYZCantos("IDEsticado");
 
 		return Vector3.Distance (cam.WorldToScreenPoint(seEsticado), cam.WorldToScreenPoint(idEsticado));
+	}
+	public float LerDimensaoMin(){
+		Vector3 seDobrado = leXYZCantos("SEDobrado");
+		Vector3 idDobrado = leXYZCantos("IDDobrado");
+
+		return Vector3.Distance (cam.WorldToScreenPoint(seDobrado), cam.WorldToScreenPoint(idDobrado));
 	}
 	// FIM Códigos para salvamento e leitura da calibragem
 
@@ -77,8 +83,8 @@ public class SalvaDadosEntreScenes : MonoBehaviour
 			PlayerPrefs.DeleteKey ("CircuitoAtual_"+i);
 
 		// Salvando os novos valores deste circuito
-		foreach (int i in circuito) {
-			PlayerPrefs.SetInt ("CircuitoAtual_"+i, i);
+		for(int i=0; i < circuito.Count; ++i){			
+			PlayerPrefs.SetInt ("CircuitoAtual_"+i, circuito[i]);
 		}
 
 		print ("Circuito Salvo!\n");
@@ -89,7 +95,7 @@ public class SalvaDadosEntreScenes : MonoBehaviour
 		for (int i = 0; PlayerPrefs.HasKey ("CircuitoAtual_" + i); ++i)
 			lista.Add (PlayerPrefs.GetInt ("CircuitoAtual_" + i));
 
-		print ("Circuito Lido!\n");
+		print ("Circuito Lido!\nCount: "+lista.Count);
 
 		return lista;
 
@@ -105,9 +111,8 @@ public class SalvaDadosEntreScenes : MonoBehaviour
 			PlayerPrefs.DeleteKey ("NomeMarcadores_"+i);
 
 		// Salvando os novos valores deste circuito
-		int j = 0;
-		foreach (string i in nomesMarcadores) {
-			PlayerPrefs.SetString ("NomeMarcadores_"+j, i);
+		for(int i = 0; i < nomesMarcadores.Count; ++i){
+			PlayerPrefs.SetString ("NomeMarcadores_"+i, nomesMarcadores[i]);
 		}
 
 		PlayerPrefs.Save ();

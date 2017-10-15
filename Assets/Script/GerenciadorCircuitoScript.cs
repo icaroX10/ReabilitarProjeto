@@ -46,5 +46,9 @@ public class GerenciadorCircuitoScript : MonoBehaviour
 	public int MarcadorAtual(){
 		return circuito [passoAtual];
 	}
+
+	public int PassoMaximo(){
+		return passoMaximo;
+	}
 }
 

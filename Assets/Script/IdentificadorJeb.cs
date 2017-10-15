@@ -11,6 +11,8 @@ public class IdentificadorJeb : MonoBehaviour {
 
 	private float tempoParaDelay;
 
+	private float precisao = 0.1f;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -37,8 +39,9 @@ public class IdentificadorJeb : MonoBehaviour {
 	public bool EsticouBraco(){
 		Vector3 im0 = cam.WorldToScreenPoint (imTarget.transform.GetChild (0).transform.position);
 		Vector3 im1 = cam.WorldToScreenPoint (imTarget.transform.GetChild (1).transform.position);
+		float dist = Vector3.Distance (im0, im1);
 
-		bool retorno = Vector3.Distance (im0, im1) >= dimensaoMax*0.9f;
+		bool retorno = dist >= dimensaoMax*(1.0f - precisao) && dist < dimensaoMax*(1.0f + precisao);
 		if (retorno)
 			tempoParaDelay = Time.time;
 		
@@ -48,8 +51,9 @@ public class IdentificadorJeb : MonoBehaviour {
 	public bool DobrouBraco(){
 		Vector3 im0 = cam.WorldToScreenPoint (imTarget.transform.GetChild (0).transform.position);
 		Vector3 im1 = cam.WorldToScreenPoint (imTarget.transform.GetChild (1).transform.position);
+		float dist = Vector3.Distance (im0, im1);
 
-		bool retorno = Vector3.Distance (im0, im1) <= dimensaoMin*1.1f;
+		bool retorno = dist >= dimensaoMin*(1.0f - precisao) && dist < dimensaoMin*(1.0f + precisao);
 		if (retorno && tempoParaDelay + 1.0f > Time.time)
 			return false;
 

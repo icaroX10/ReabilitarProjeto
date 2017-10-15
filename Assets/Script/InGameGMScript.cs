@@ -26,10 +26,14 @@ public class InGameGMScript : MonoBehaviour
 	private bool exitBtn = false;
 	private bool circuitoImpossivel = false;
 
-	private bool bracoDobrado = true;
+	private bool bracoDobrado = false;
 	private bool bracoEsticado = false;
 
 	private int ultimoMarcador = -1;
+
+	private float tempoParaMarcadores = 0.0f;
+
+	private bool teste = false;
 
 	// Use this for initialization
 	void Start () {
@@ -41,7 +45,7 @@ public class InGameGMScript : MonoBehaviour
 		identificaJeb = gameObject.AddComponent<IdentificadorJeb> ();
 
 		// TODO: Deletar quando implementar o substituto -------
-		List<int> x = new List<int>(); x.Add(0); x.Add(1); x.Add(3);
+		List<int> x = new List<int>(); x.Add(0); x.Add(1); x.Add(2);
 		salvador.SalvarCircuito(x);
 
 		List<string> y = new List<string> (); y.Add ("Leão"); y.Add ("Golfinho"); y.Add ("Besouro");
@@ -64,15 +68,25 @@ public class InGameGMScript : MonoBehaviour
 		identificaJeb.InsereImTarget (listaIMTargetScript.Get(0).gameObject);
 		identificaJeb.InsereCamera (cam);
 		identificaJeb.SetaDimensaoPJeb (salvador.LerDimensaoMin(), salvador.LerDimensaoMax());
+
+
+
+
+		mascoteGuia.Ativador (true);
+
+		print (Time.time);
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		messenger.messengerTxt = "<color=white>"+Time.time.ToString()+ "\nTempoParaMarcadores: "+tempoParaMarcadores.ToString()+" if- "+teste.ToString()+"</color>";
+
 		if (exitBtn)
 			voltarMenuPrincipal ();
 		if (circuitoImpossivel)
 			return;
 
+		//mascoteGuia.AvisaEstagio (gerenciadorCircuito.PassoAtual()+1, gerenciadorCircuito.PassoMaximo());
 		if (gerenciadorCircuito.TemProximo ()) {
 			if (ultimoMarcador != gerenciadorCircuito.MarcadorAtual ()) {
 				print ("Estamos no marcador no: " + gerenciadorCircuito.MarcadorAtual ());
@@ -84,21 +98,46 @@ public class InGameGMScript : MonoBehaviour
 			}
 
 			if (imDetector.isFound) {
-				mascoteGuia.Ativador (false);
-				if (!bracoEsticado && (bracoEsticado = identificaJeb.EsticouBraco ())) {
-					print ("ENTROU BRACO ESTICADO");
-					bracoDobrado = !bracoEsticado;
-				}else if(!bracoDobrado && (bracoDobrado = identificaJeb.DobrouBraco())){
-					print ("ENTROU BRACO DOBRADO");
-					gerenciadorCircuito.AvancarPasso ();
+				//mascoteGuia.Ativador (false);
+//				(Time.time < recemCalibrado + 2.0f)
+				if (teste = (tempoParaMarcadores < Time.time)) {
+					if (!bracoDobrado && identificaJeb.DobrouBraco ()) {
+						print ("ENTROU BRACO DOBRADO");
 
-					bracoEsticado = !bracoDobrado;
+						mascoteGuia.EsticarBracos ();
+
+						bracoDobrado = true;
+					} else if (!bracoEsticado && identificaJeb.EsticouBraco ()) {
+						print ("ENTROU BRACO ESTICADO");
+
+						mascoteGuia.DobrarBracos ();
+
+						bracoEsticado = true;
+						//bracoDobrado = !bracoEsticado;
+					} else if (bracoDobrado && bracoEsticado && identificaJeb.DobrouBraco ()) {
+						print ("ENTROU BRACO DOBRADO NOVAMENTE");
+						gerenciadorCircuito.AvancarPasso ();
+
+						tempoParaMarcadores = Time.time + 2.0f;
+						//mascoteGuia.EsticarBracos ();
+
+						bracoDobrado = false;
+						bracoEsticado = false;
+						//bracoEsticado = !bracoDobrado;
+					} else if(!bracoDobrado && !bracoEsticado) {
+						//print ("ENTROU BRACO SEM DOBRAR E ESTICAR");
+						mascoteGuia.DobrarBracos ();
+					}
+				} else {
+					mascoteGuia.AvisaEstagio (gerenciadorCircuito.PassoAtual()+1, gerenciadorCircuito.PassoMaximo());
 				}
-			}else
-				mascoteGuia.Ativador (true);
-			
+			} else {
+				//mascoteGuia.Ativador (true);
+				mascoteGuia.ApontarMarcador (gerenciadorCircuito.MarcadorAtual ());
+			}
 		} else {
-			mascoteGuia.Ativador (false);
+			mascoteGuia.FinalizarFase ();
+			//mascoteGuia.Ativador (false);
 		}
 		/*
 		if (frisbeGO)

@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
+using UnityEngine.UI;
 
 public class HistoricoScript : MonoBehaviour {
 
     //private string firstJogada = PlayerPrefs.HasKey("firstJogada") ? PlayerPrefs.GetString("firstJogada"):null;
-     string firstJogada = "30/09/2017";
+    string firstJogada = "30/09/2017";
+    public Text qtAtivdade;
+    public Text meAtivdade;
 
     // Use this for initialization
     void Start () {
@@ -139,7 +142,7 @@ public class HistoricoScript : MonoBehaviour {
                 }
                 media = aux / qtItens;
             }
-
+            qtAtivdade.text = qtItens.ToString();
             Debug.Log(media);
             return media;
         }
@@ -193,7 +196,7 @@ public class HistoricoScript : MonoBehaviour {
     public void GerarHistorico()
     {
         double media = HistoricoMedia("score");
-        Debug.Log(media);
+        meAtivdade.text = media.ToString();
     }
     
     public void DeletarPrefs()

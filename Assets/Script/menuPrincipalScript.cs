@@ -61,6 +61,10 @@ public class menuPrincipalScript : MonoBehaviour {
     {
         SceneManager.LoadSceneAsync("Ranking");
     }
+    public void Historico()
+    {
+        SceneManager.LoadSceneAsync("Historico");
+    }
 
     public void Voltar()
     {

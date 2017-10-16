@@ -35,12 +35,36 @@ public class menuPrincipalScript : MonoBehaviour {
 
     public void Jogar()
     {
+        SceneManager.LoadSceneAsync("Circuito");
+    }
+
+    public void inGame()
+    {
         SceneManager.LoadSceneAsync("jogar");
     }
 
     public void Calibrar()
     {
         SceneManager.LoadSceneAsync("base");
+    }
+    public void Configuracao()
+    {
+        SceneManager.LoadSceneAsync("Configuracao");
+    }
+
+    public void Loja()
+    {
+        SceneManager.LoadSceneAsync("loja");
+    }
+
+    public void Ranking()
+    {
+        SceneManager.LoadSceneAsync("Ranking");
+    }
+
+    public void Voltar()
+    {
+        SceneManager.LoadSceneAsync("menuInicial");
     }
 
 }

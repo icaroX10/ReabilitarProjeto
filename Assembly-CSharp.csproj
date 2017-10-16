@@ -49,6 +49,7 @@
      <Compile Include="Assets\Script\CameraSeguirBorda.cs" />
      <Compile Include="Assets\Script\Contador.cs" />
      <Compile Include="Assets\Script\GMscript.cs" />
+     <Compile Include="Assets\Script\HistoricoScript.cs" />
      <Compile Include="Assets\Script\ImageTargetScale.cs" />
      <Compile Include="Assets\Script\KittenScript.cs" />
      <Compile Include="Assets\Script\MessengerScript.cs" />
@@ -106,8 +107,10 @@
      <None Include="Assets\Vuforia\Editor\WebcamProfiles\profiles.xml" />
      <None Include="Assets\Vuforia\Shaders\DepthMask.shader" />
      <None Include="Assets\StreamingAssets\QCAR\teste.xml" />
+     <None Include="Assets\Resources\pontuacao.txt.txt" />
      <None Include="Assets\Vuforia\Shaders\ClippingMask.shader" />
      <None Include="Assets\Vuforia\Shaders\BrightTexture.shader" />
+     <None Include="Assets\pontuacao.ini.txt" />
      <None Include="Assets\Vuforia\Shaders\Text3D.shader" />
  <Reference Include="Assembly-UnityScript-firstpass">
  <HintPath>C:/Users/ICARO/Documents/ReabilitarProjeto/Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll</HintPath>

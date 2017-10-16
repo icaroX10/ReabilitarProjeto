@@ -60,16 +60,20 @@ public class SalvaDadosEntreScenes : MonoBehaviour
 	}
 
 	public float LerDimensaoMax(){
-		Vector3 seEsticado = leXYZCantos("SEEsticado");
-		Vector3 idEsticado = leXYZCantos("IDEsticado");
+		Vector3 seEsticado = cam.WorldToScreenPoint(leXYZCantos("SEEsticado"));
+		Vector3 idEsticado = cam.WorldToScreenPoint(leXYZCantos("IDEsticado"));
+		seEsticado.z = 10;
+		idEsticado.z = 10;
 
-		return Vector3.Distance (cam.WorldToScreenPoint(seEsticado), cam.WorldToScreenPoint(idEsticado));
+		return Vector3.Distance (seEsticado, idEsticado);
 	}
 	public float LerDimensaoMin(){
-		Vector3 seDobrado = leXYZCantos("SEDobrado");
-		Vector3 idDobrado = leXYZCantos("IDDobrado");
+		Vector3 seDobrado = cam.WorldToScreenPoint(leXYZCantos("SEDobrado"));
+		Vector3 idDobrado = cam.WorldToScreenPoint(leXYZCantos("IDDobrado"));
+		seDobrado.z = 10;
+		idDobrado.z = 10;
 
-		return Vector3.Distance (cam.WorldToScreenPoint(seDobrado), cam.WorldToScreenPoint(idDobrado));
+		return Vector3.Distance (seDobrado,idDobrado);
 	}
 	// FIM Códigos para salvamento e leitura da calibragem
 

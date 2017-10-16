@@ -5,14 +5,14 @@ using UnityEngine;
 public class ListaImTargetsScript : MonoBehaviour {
 
 	private int lastActive = 0;
-	private List<Transform> lista;
+	public List<Transform> lista;
 
 	void Start(){
 		
 	}
 
-	public void Iniciailizar(){
-		lista = Listar ();
+	public void Inicializar(){
+		//lista = Listar ();
 		foreach(Transform go in lista){
 			go.gameObject.SetActive (false);
 		}
@@ -20,12 +20,12 @@ public class ListaImTargetsScript : MonoBehaviour {
 	}
 
 	public List<Transform> Listar(){
-		List<Transform> lista = new List<Transform>();
+		/*List<Transform> lista = new List<Transform>();
 
 		int max = transform.childCount;
 		for (int id = 0; id < max; ++id) {
 			lista.Add (transform.GetChild(id).transform);
-		}
+		}*/
 		return lista;
 	}
 
@@ -39,13 +39,13 @@ public class ListaImTargetsScript : MonoBehaviour {
 		if (index == lastActive)
 			return;
 
-		if(index < transform.childCount)
+		if(index < lista.Count)
 			ativaTarget (index);
 	}
 
 	private void ativaTarget(int index){
-		transform.GetChild (lastActive).gameObject.SetActive(false);
-		transform.GetChild (index).gameObject.SetActive(true);
+		lista[lastActive].gameObject.SetActive(false);
+		lista[index].gameObject.SetActive(true);
 		lastActive = index;
 	}
 

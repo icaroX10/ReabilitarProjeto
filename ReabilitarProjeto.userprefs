@@ -1,15 +1,10 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\InGameGMScript.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\IdentificadorJeb.cs">
     <Files>
-      <File FileName="Assets\Script\InGameGMScript.cs" Line="108" Column="7" />
-      <File FileName="Assets\Script\SalvaDadosEntreScenes.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\GerenciadorCircuitoScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\MascoteGuiaScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\IdentificadorJeb.cs" Line="56" Column="10" />
-      <File FileName="Assets\Script\ListaImTargetsScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\MessengerScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\gizmosScript.cs" Line="20" Column="42" />
+      <File FileName="Assets\Script\InGameGMScript.cs" Line="59" Column="3" />
+      <File FileName="Assets\Script\IdentificadorJeb.cs" Line="24" Column="45" />
+      <File FileName="Assets\Script\CalibradorScript.cs" Line="143" Column="52" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

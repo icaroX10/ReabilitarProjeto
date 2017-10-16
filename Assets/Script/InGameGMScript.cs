@@ -7,8 +7,7 @@ using UnityEngine.SceneManagement;
 public class InGameGMScript : MonoBehaviour
 {
 	public Camera cam;
-	public GameObject listaPai;
-	public GameObject mascoteGuiaGO;
+	//public GameObject mascoteGuiaGO;
 
 	private MessengerScript messenger;
 	private ListaImTargetsScript listaIMTargetScript;
@@ -31,17 +30,17 @@ public class InGameGMScript : MonoBehaviour
 
 	private int ultimoMarcador = -1;
 
-	private float tempoParaMarcadores = 0.0f;
+	private float tempoParaMarcadores;
 
 	private bool teste = false;
 
 	// Use this for initialization
 	void Start () {
-		listaIMTargetScript = listaPai.gameObject.GetComponent<ListaImTargetsScript> (); listaIMTargetScript.Iniciailizar ();
+		listaIMTargetScript = gameObject.GetComponent<ListaImTargetsScript> (); listaIMTargetScript.Inicializar ();
 		messenger = gameObject.AddComponent<MessengerScript> ();
 		gerenciadorCircuito = gameObject.AddComponent<GerenciadorCircuitoScript> ();
 		salvador = gameObject.AddComponent<SalvaDadosEntreScenes> ();
-		mascoteGuia = mascoteGuiaGO.gameObject.GetComponent<MascoteGuiaScript> ();
+		mascoteGuia = gameObject.AddComponent<MascoteGuiaScript> ();
 		identificaJeb = gameObject.AddComponent<IdentificadorJeb> ();
 
 		// TODO: Deletar quando implementar o substituto -------
@@ -67,7 +66,13 @@ public class InGameGMScript : MonoBehaviour
 
 		identificaJeb.InsereImTarget (listaIMTargetScript.Get(0).gameObject);
 		identificaJeb.InsereCamera (cam);
-		identificaJeb.SetaDimensaoPJeb (salvador.LerDimensaoMin(), salvador.LerDimensaoMax());
+		identificaJeb.SetaCantos (
+			salvador.leXYZCantos("SEDobrado"),
+			salvador.leXYZCantos("IDDobrado"),
+			salvador.leXYZCantos("SEEsticado"),
+			salvador.leXYZCantos("IDEsticado")
+		);
+		//identificaJeb.SetaDimensaoPJeb (salvador.LerDimensaoMin(), salvador.LerDimensaoMax());
 
 
 
@@ -75,6 +80,9 @@ public class InGameGMScript : MonoBehaviour
 		mascoteGuia.Ativador (true);
 
 		print (Time.time);
+
+		DEBUGAPONTOSDECALIBRAGEM ();
+		tempoParaMarcadores = Time.time + 2.0f;
 	}
 	
 	// Update is called once per frame
@@ -97,30 +105,38 @@ public class InGameGMScript : MonoBehaviour
 				ultimoMarcador = gerenciadorCircuito.MarcadorAtual ();
 			}
 
-			if (imDetector.isFound) {
-				//mascoteGuia.Ativador (false);
-//				(Time.time < recemCalibrado + 2.0f)
-				if (teste = (tempoParaMarcadores < Time.time)) {
+			if (teste = (tempoParaMarcadores < Time.time)) {
+				if (imDetector.isFound) {
+					if (identificaJeb.DobrouBraco ()) {
+						if (identificaJeb.EsticouBraco ()) {
+							if (identificaJeb.DobrouNovamenteBraco ()) {
+								gerenciadorCircuito.AvancarPasso ();
+								tempoParaMarcadores = Time.time + 2.0f;
+							} else {
+								mascoteGuia.DobrarBracos ();
+							}
+						} else {
+							mascoteGuia.EsticarBracos ();
+						}
+					} else {
+						mascoteGuia.DobrarBracos ();
+					}
+					/*
+					// INÍCIO A SUBISTITUIR
 					if (!bracoDobrado && identificaJeb.DobrouBraco ()) {
 						print ("ENTROU BRACO DOBRADO");
-
 						mascoteGuia.EsticarBracos ();
-
 						bracoDobrado = true;
 					} else if (!bracoEsticado && identificaJeb.EsticouBraco ()) {
 						print ("ENTROU BRACO ESTICADO");
-
 						mascoteGuia.DobrarBracos ();
-
 						bracoEsticado = true;
 						//bracoDobrado = !bracoEsticado;
 					} else if (bracoDobrado && bracoEsticado && identificaJeb.DobrouBraco ()) {
 						print ("ENTROU BRACO DOBRADO NOVAMENTE");
 						gerenciadorCircuito.AvancarPasso ();
-
 						tempoParaMarcadores = Time.time + 2.0f;
 						//mascoteGuia.EsticarBracos ();
-
 						bracoDobrado = false;
 						bracoEsticado = false;
 						//bracoEsticado = !bracoDobrado;
@@ -128,13 +144,16 @@ public class InGameGMScript : MonoBehaviour
 						//print ("ENTROU BRACO SEM DOBRAR E ESTICAR");
 						mascoteGuia.DobrarBracos ();
 					}
+					// FIM A SUBISTITUIR
+					*/
 				} else {
-					mascoteGuia.AvisaEstagio (gerenciadorCircuito.PassoAtual()+1, gerenciadorCircuito.PassoMaximo());
+					//mascoteGuia.Ativador (true);
+					mascoteGuia.ApontarMarcador (gerenciadorCircuito.MarcadorAtual ());
 				}
 			} else {
-				//mascoteGuia.Ativador (true);
-				mascoteGuia.ApontarMarcador (gerenciadorCircuito.MarcadorAtual ());
+				mascoteGuia.AvisaEstagio (gerenciadorCircuito.PassoAtual()+1, gerenciadorCircuito.PassoMaximo());
 			}
+			
 		} else {
 			mascoteGuia.FinalizarFase ();
 			//mascoteGuia.Ativador (false);
@@ -170,5 +189,45 @@ public class InGameGMScript : MonoBehaviour
 		print ("Circuito impossivel!");
 	}
 
+	private void DEBUGAPONTOSDECALIBRAGEM(){
+		GameObject go1 = GameObject.CreatePrimitive (PrimitiveType.Sphere);
+		GameObject go2 = GameObject.CreatePrimitive (PrimitiveType.Sphere);
+		GameObject go3 = GameObject.CreatePrimitive (PrimitiveType.Sphere);
+		GameObject go4 = GameObject.CreatePrimitive (PrimitiveType.Sphere);
+		Vector3 sss = new Vector3 (0.3f,0.3f,0.3f);
+
+		go1.transform.position = setaNoScreenSpace(salvador.leXYZCantos("SEEsticado"));
+		go1.transform.localScale = sss;
+
+		go2.transform.position = setaNoScreenSpace(salvador.leXYZCantos("IDEsticado"));
+		go2.transform.localScale = sss;
+
+		go3.transform.position = setaNoScreenSpace(salvador.leXYZCantos("SEDobrado"));
+		go3.transform.localScale = sss;
+
+		go4.transform.position = setaNoScreenSpace(salvador.leXYZCantos("IDDobrado"));
+		go4.transform.localScale = sss;
+
+
+
+		identificaJeb.INSERExyzCANTOS (
+			go3.transform.position,
+			go4.transform.position,
+			go1.transform.position,
+			go2.transform.position
+		);
+
+
+	}
+
+	private Vector3 setaNoScreenSpace(Vector3 i){
+		float myX = i.x;
+		float myY = i.y;
+		float myZ = i.z;
+		Vector3 vet = cam.WorldToScreenPoint (new Vector3 (myX, myY, myZ));
+		vet.z = 10;
+		vet = cam.ScreenToWorldPoint (vet);
+		return vet;
+	}
 }
 

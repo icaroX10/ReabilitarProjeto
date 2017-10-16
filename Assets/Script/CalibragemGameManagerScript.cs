@@ -15,6 +15,7 @@ public class CalibragemGameManagerScript : MonoBehaviour {
 	public ReadTarget imDetector;
 
 	private MessengerScript messenger;
+	private MessengerScript msn;
 
 	private CalibradorScript calibrador;
 	private bool exitBtn;
@@ -26,6 +27,9 @@ public class CalibragemGameManagerScript : MonoBehaviour {
 		// Criando mensageiro inferior
 		messenger = gameObject.AddComponent<MessengerScript>();
 		messenger.InsereRectLinhas(0, Screen.height, Screen.width,2);
+
+		msn = gameObject.AddComponent<MessengerScript> ();
+		msn.InsereRect (new Rect(0,0,Screen.width, Screen.height/2.0f));
 
 		calibrador = gameObject.AddComponent<CalibradorScript> ();
 		calibrador.InsereCantos (CantosDobrado, CantosEsticado, ImageTarget);
@@ -50,6 +54,9 @@ public class CalibragemGameManagerScript : MonoBehaviour {
 			salvaDados.salvarCalibragem ();
 			salvo = true;
 		}
+
+
+		DEBUGANDO ();
 	}
 
 	void OnGUI(){
@@ -58,5 +65,12 @@ public class CalibragemGameManagerScript : MonoBehaviour {
 
 	void voltarMenuPrincipal(){
 		SceneManager.LoadSceneAsync ("menuInicial");
+	}
+
+	void DEBUGANDO(){
+		msn.messengerTxt = "<color=magenta>" +
+			ImageTarget.transform.GetChild (0).transform.position+
+			ImageTarget.transform.GetChild (1).transform.position+
+			"</color>";
 	}
 }

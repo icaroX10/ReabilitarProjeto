@@ -50,5 +50,9 @@ public class GerenciadorCircuitoScript : MonoBehaviour
 	public int PassoMaximo(){
 		return passoMaximo;
 	}
+
+	public void ReiniciarFase(){
+		passoAtual = 0;
+	}
 }
 

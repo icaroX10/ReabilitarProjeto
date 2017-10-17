@@ -8,8 +8,11 @@ using UnityEngine.UI;
 public class InGameGMScript : MonoBehaviour
 {
 	public Camera cam;
+	public GameObject CanvasInGame;
+	public GameObject CanvasFimGame;
 	public Text balaoMascote;
-	public Text balaoFim;
+	public Text balaoFimPontuacao;
+	public Text balaoFimElogio;
 	//public GameObject mascoteGuiaGO;
 
 	private MessengerScript messenger;
@@ -65,7 +68,7 @@ public class InGameGMScript : MonoBehaviour
 		salvador.InsereCamera (cam);
 
 		mascoteGuia.InsereBalaoTexto (balaoMascote);
-		mascoteGuia.InsereBalaoFim (balaoFim);
+		mascoteGuia.InsereBalaoFim (balaoFimPontuacao,balaoFimElogio);
 
 		mascoteGuia.InsereNomesMarcadores (salvador.LerNomesMarcadores());
 
@@ -84,6 +87,7 @@ public class InGameGMScript : MonoBehaviour
 
 		print (Time.time);
 
+		CanvasInGame.SetActive (true); CanvasFimGame.SetActive (false);
 		DEBUGAPONTOSDECALIBRAGEM ();
 		tempoParaMarcadores = Time.time + 2.0f;
 		tempoDeJogoIni = Time.time;
@@ -97,6 +101,7 @@ public class InGameGMScript : MonoBehaviour
 			return;
 
 		if (gerenciadorCircuito.TemProximo ()) {
+			CanvasInGame.SetActive (true); CanvasFimGame.SetActive (false);
 			if (ultimoMarcador != gerenciadorCircuito.MarcadorAtual ()) {
 				print ("Estamos no marcador no: " + gerenciadorCircuito.MarcadorAtual ());
 				listaIMTargetScript.AtivaTarget (gerenciadorCircuito.MarcadorAtual ());
@@ -128,6 +133,7 @@ public class InGameGMScript : MonoBehaviour
 				mascoteGuia.AvisaEstagio (gerenciadorCircuito.PassoAtual()+1, gerenciadorCircuito.PassoMaximo());
 			}
 		} else {
+			CanvasInGame.SetActive (false); CanvasFimGame.SetActive (true);
 			mascoteGuia.FinalizarFase (tempoDeJogoIni, salvador.LeTempoMaximoFase("####FASEATUAL####"));
 		}
 
@@ -140,6 +146,17 @@ public class InGameGMScript : MonoBehaviour
 		SceneManager.LoadSceneAsync ("jogar");
 	}
 
+	public void reiniciarFase(){
+		gerenciadorCircuito.ReiniciarFase ();
+		tempoParaMarcadores = Time.time + 2.0f;
+		tempoDeJogoIni = Time.time;
+	}
+
+	public void debuguguugug(){
+		CanvasInGame.SetActive (false); CanvasFimGame.SetActive (true);
+		mascoteGuia.FinalizarFase (tempoDeJogoIni, 60.0f);
+		circuitoImpossivel = true;
+	}
 	/* // Bertolino: A retirar para o InGame
 	void criaFrisbe(){
 		frisbeGO = Instantiate (frisbe,Vector3.zero, Quaternion.identity) as GameObject;

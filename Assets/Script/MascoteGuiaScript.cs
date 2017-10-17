@@ -9,7 +9,8 @@ public class MascoteGuiaScript : MonoBehaviour {
 	private List<string> nomesMarcadores;
 	private MessengerScript messenger;
 	private Text balaoMensagem;
-	private Text balaoFim;
+	private Text balaoFimPontuacao;
+	private Text balaoFimElogio;
 
 	// Mensagens padrão do Mascote
 	const string texto0 = "<color=black>Aponte do dispositivo para o marcador</color> ";
@@ -18,6 +19,7 @@ public class MascoteGuiaScript : MonoBehaviour {
 	const string texto3 = "<color=black>Fase <color=lime>concluída</color>!\nClique em sair.</color>";
 	const string texto4a = "<color=black>Você está no passo</color> ";
 	const string texto4b = " <color=black>de</color> ";
+	const string texto7 = "Parabéns!!! Você concluiu a fase!!!";
 	// Fim mensagens padrão do Mascote
 
 	// Use this for initialization
@@ -37,8 +39,9 @@ public class MascoteGuiaScript : MonoBehaviour {
 	public void InsereBalaoTexto(Text balao){
 		balaoMensagem = balao;
 	}
-	public void InsereBalaoFim(Text balao){
-		balaoFim = balao;
+	public void InsereBalaoFim(Text pontuacao, Text elogio){
+		balaoFimPontuacao = pontuacao;
+		balaoFimElogio = elogio;
 	}
 	public void InsereNomesMarcadores(List<string> lista){
 		nomesMarcadores = lista;
@@ -62,6 +65,8 @@ public class MascoteGuiaScript : MonoBehaviour {
 	}
 
 	public void FinalizarFase(float tempoInicio, float tempoMax){
+		balaoFimElogio.text = texto7;
+
 		balaoMensagem.text = texto3;
 	}
 

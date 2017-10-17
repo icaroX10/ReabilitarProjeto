@@ -3,10 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using Vuforia;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class InGameGMScript : MonoBehaviour
 {
 	public Camera cam;
+	public Text balaoMascote;
+	public Text balaoFim;
 	//public GameObject mascoteGuiaGO;
 
 	private MessengerScript messenger;
@@ -31,6 +34,7 @@ public class InGameGMScript : MonoBehaviour
 	private int ultimoMarcador = -1;
 
 	private float tempoParaMarcadores;
+	private float tempoDeJogoIni;
 
 	private bool teste = false;
 
@@ -60,6 +64,9 @@ public class InGameGMScript : MonoBehaviour
 		gerenciadorCircuito.InsereCircuito (salvador.LerCircuito());
 		salvador.InsereCamera (cam);
 
+		mascoteGuia.InsereBalaoTexto (balaoMascote);
+		mascoteGuia.InsereBalaoFim (balaoFim);
+
 		mascoteGuia.InsereNomesMarcadores (salvador.LerNomesMarcadores());
 
 		imDetector = listaIMTargetScript.LerReadTarget (0);
@@ -72,10 +79,6 @@ public class InGameGMScript : MonoBehaviour
 			salvador.leXYZCantos("SEEsticado"),
 			salvador.leXYZCantos("IDEsticado")
 		);
-		//identificaJeb.SetaDimensaoPJeb (salvador.LerDimensaoMin(), salvador.LerDimensaoMax());
-
-
-
 
 		mascoteGuia.Ativador (true);
 
@@ -83,18 +86,16 @@ public class InGameGMScript : MonoBehaviour
 
 		DEBUGAPONTOSDECALIBRAGEM ();
 		tempoParaMarcadores = Time.time + 2.0f;
+		tempoDeJogoIni = Time.time;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		messenger.messengerTxt = "<color=white>"+Time.time.ToString()+ "\nTempoParaMarcadores: "+tempoParaMarcadores.ToString()+" if- "+teste.ToString()+"</color>";
 
-		if (exitBtn)
-			voltarMenuPrincipal ();
 		if (circuitoImpossivel)
 			return;
 
-		//mascoteGuia.AvisaEstagio (gerenciadorCircuito.PassoAtual()+1, gerenciadorCircuito.PassoMaximo());
 		if (gerenciadorCircuito.TemProximo ()) {
 			if (ultimoMarcador != gerenciadorCircuito.MarcadorAtual ()) {
 				print ("Estamos no marcador no: " + gerenciadorCircuito.MarcadorAtual ());
@@ -104,7 +105,6 @@ public class InGameGMScript : MonoBehaviour
 				identificaJeb.InsereImTarget (listaIMTargetScript.Get(gerenciadorCircuito.MarcadorAtual ()).gameObject);
 				ultimoMarcador = gerenciadorCircuito.MarcadorAtual ();
 			}
-
 			if (teste = (tempoParaMarcadores < Time.time)) {
 				if (imDetector.isFound) {
 					if (identificaJeb.DobrouBraco ()) {
@@ -121,53 +121,22 @@ public class InGameGMScript : MonoBehaviour
 					} else {
 						mascoteGuia.DobrarBracos ();
 					}
-					/*
-					// INÍCIO A SUBISTITUIR
-					if (!bracoDobrado && identificaJeb.DobrouBraco ()) {
-						print ("ENTROU BRACO DOBRADO");
-						mascoteGuia.EsticarBracos ();
-						bracoDobrado = true;
-					} else if (!bracoEsticado && identificaJeb.EsticouBraco ()) {
-						print ("ENTROU BRACO ESTICADO");
-						mascoteGuia.DobrarBracos ();
-						bracoEsticado = true;
-						//bracoDobrado = !bracoEsticado;
-					} else if (bracoDobrado && bracoEsticado && identificaJeb.DobrouBraco ()) {
-						print ("ENTROU BRACO DOBRADO NOVAMENTE");
-						gerenciadorCircuito.AvancarPasso ();
-						tempoParaMarcadores = Time.time + 2.0f;
-						//mascoteGuia.EsticarBracos ();
-						bracoDobrado = false;
-						bracoEsticado = false;
-						//bracoEsticado = !bracoDobrado;
-					} else if(!bracoDobrado && !bracoEsticado) {
-						//print ("ENTROU BRACO SEM DOBRAR E ESTICAR");
-						mascoteGuia.DobrarBracos ();
-					}
-					// FIM A SUBISTITUIR
-					*/
 				} else {
-					//mascoteGuia.Ativador (true);
 					mascoteGuia.ApontarMarcador (gerenciadorCircuito.MarcadorAtual ());
 				}
 			} else {
 				mascoteGuia.AvisaEstagio (gerenciadorCircuito.PassoAtual()+1, gerenciadorCircuito.PassoMaximo());
 			}
-			
 		} else {
-			mascoteGuia.FinalizarFase ();
-			//mascoteGuia.Ativador (false);
+			mascoteGuia.FinalizarFase (tempoDeJogoIni, salvador.LeTempoMaximoFase("####FASEATUAL####"));
 		}
+
 		/*
 		if (frisbeGO)
 			frisbeScrpt.isActive = imDetector.isFound;*/
 	}
 
-	void OnGUI(){
-		exitBtn = GUI.RepeatButton (new Rect (Screen.width - 100.0f, Screen.height - 100.0f, 100.0f, 100.0f), "<b>Sair</b>");
-	}
-
-	void voltarMenuPrincipal(){
+	public void voltarMenuPrincipal(){
 		SceneManager.LoadSceneAsync ("jogar");
 	}
 

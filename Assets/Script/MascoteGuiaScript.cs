@@ -1,20 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MascoteGuiaScript : MonoBehaviour {
-
+	
 	private GameObject mascoteGuiador;
 	private List<string> nomesMarcadores;
 	private MessengerScript messenger;
+	private Text balaoMensagem;
+	private Text balaoFim;
 
 	// Mensagens padrão do Mascote
-	const string texto0 = "<color=white>Aponte do dispositivo para o marcador</color> ";
-	const string texto1 = "<color=magenta>Dobre</color> <color=white>seus braços!</color>";
-	const string texto2 = "<color=lime>Estique</color> <color=white>seus braços!</color>";
-	const string texto3 = "<color=white>Fase <color=lime>concluída</color>!\nClique em sair.</color>";
-	const string texto4a = "<color=white>Você está no passo</color> ";
-	const string texto4b = " <color=white>de</color> ";
+	const string texto0 = "<color=black>Aponte do dispositivo para o marcador</color> ";
+	const string texto1 = "<color=magenta>Dobre</color> <color=black>seus braços!</color>";
+	const string texto2 = "<color=lime>Estique</color> <color=black>seus braços!</color>";
+	const string texto3 = "<color=black>Fase <color=lime>concluída</color>!\nClique em sair.</color>";
+	const string texto4a = "<color=black>Você está no passo</color> ";
+	const string texto4b = " <color=black>de</color> ";
 	// Fim mensagens padrão do Mascote
 
 	// Use this for initialization
@@ -31,6 +34,12 @@ public class MascoteGuiaScript : MonoBehaviour {
 		this.mascoteGuiador = mascoteGuiador;
 	}
 
+	public void InsereBalaoTexto(Text balao){
+		balaoMensagem = balao;
+	}
+	public void InsereBalaoFim(Text balao){
+		balaoFim = balao;
+	}
 	public void InsereNomesMarcadores(List<string> lista){
 		nomesMarcadores = lista;
 	}
@@ -41,22 +50,22 @@ public class MascoteGuiaScript : MonoBehaviour {
 
 	public void ApontarMarcador(int index){
 		if(index < nomesMarcadores.Count)
-			messenger.messengerTxt = texto0 + "<color=red>"+nomesMarcadores[index]+"</color>";
+			balaoMensagem.text = texto0 + "<color=red>"+nomesMarcadores[index]+"</color>";
 	}
 
 	public void DobrarBracos(){
-		messenger.messengerTxt = texto1;
+		balaoMensagem.text = texto1;
 	}
 
 	public void EsticarBracos(){
-		messenger.messengerTxt = texto2;
+		balaoMensagem.text = texto2;
 	}
 
-	public void FinalizarFase(){
-		messenger.messengerTxt = texto3;
+	public void FinalizarFase(float tempoInicio, float tempoMax){
+		balaoMensagem.text = texto3;
 	}
 
 	public void AvisaEstagio(int act, int max){
-		messenger.messengerTxt = texto4a + "<color=magenta>" + act + "</color>" + texto4b + "<color=magenta>" + max + "</color>";
+		balaoMensagem.text = texto4a + "<color=magenta>" + act + "</color>" + texto4b + "<color=magenta>" + max + "</color>";
 	}
 }

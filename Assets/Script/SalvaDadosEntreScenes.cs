@@ -9,16 +9,6 @@ public class SalvaDadosEntreScenes : MonoBehaviour
 	private GameObject ImageTarget;
 	private Camera cam;
 
-	void Start ()
-	{
-	
-	}
-	
-	void Update ()
-	{
-	
-	}
-
 	// Códigos para salvamento e leitura da calibragem
 	public void InsereCantos(GameObject CantosDobrado, GameObject CantosEsticado){
 		this.CantosDobrado = CantosDobrado;
@@ -131,5 +121,13 @@ public class SalvaDadosEntreScenes : MonoBehaviour
 
 	}
 	// FIM Códigos para salvamento e leitura dos nomes de cada marcador
+
+
+	// Códigos para o cálculo da pontuação para a fase
+	public float LeTempoMaximoFase(string idFase){
+		float tempo=0.0f;
+		return tempo;
+	}
+	// FIM Códigos para o cálculo da pontuação para a fase
 }
 

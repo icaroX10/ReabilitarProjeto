@@ -20,6 +20,8 @@ public class MascoteGuiaScript : MonoBehaviour {
 	const string texto4a = "<color=black>Você está no passo</color> ";
 	const string texto4b = " <color=black>de</color> ";
 	const string texto7 = "Parabéns!!! Você concluiu a fase!!!";
+	const string texto8a = "Tempo total de execução da fase ";
+	const string texto8b = "s!\nAproveitamento de ";
 	// Fim mensagens padrão do Mascote
 
 	// Use this for initialization
@@ -67,7 +69,11 @@ public class MascoteGuiaScript : MonoBehaviour {
 	public void FinalizarFase(float tempoInicio, float tempoMax){
 		balaoFimElogio.text = texto7;
 
-		balaoMensagem.text = texto3;
+		float tempoTotal = Mathf.Abs(Time.time - tempoInicio);
+
+		balaoFimPontuacao.text = texto8a + (tempoTotal).ToString("0.00") + texto8b + ((tempoMax-tempoTotal)/tempoMax * 100).ToString("0.00") + "%!";
+
+		//balaoMensagem.text = texto3;
 	}
 
 	public void AvisaEstagio(int act, int max){

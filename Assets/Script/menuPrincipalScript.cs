@@ -24,14 +24,42 @@ public class menuPrincipalScript : MonoBehaviour {
 			SceneManager.LoadSceneAsync ("base");*/	
 	}
 
-    public void Jogar()
-    {
-        SceneManager.LoadSceneAsync("jogar");
-    }
+	public void Jogar()
+	{
+		SceneManager.LoadSceneAsync("Circuito");
+	}
 
-    public void Calibrar()
-    {
-        SceneManager.LoadSceneAsync("calibragem");
-    }
+	public void inGame()
+	{
+		SceneManager.LoadSceneAsync("ingame");
+	}
+
+	public void Calibrar()
+	{
+		SceneManager.LoadSceneAsync("calibragem");
+	}
+	public void Configuracao()
+	{
+		SceneManager.LoadSceneAsync("Configuracao");
+	}
+
+	public void Loja()
+	{
+		SceneManager.LoadSceneAsync("loja");
+	}
+
+	public void Ranking()
+	{
+		SceneManager.LoadSceneAsync("Ranking");
+	}
+	public void Historico()
+	{
+		SceneManager.LoadSceneAsync("Historico");
+	}
+
+	public void Voltar()
+	{
+		SceneManager.LoadSceneAsync("menuInicial");
+	}
 
 }

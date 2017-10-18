@@ -172,7 +172,7 @@ public class InGameGMScript : MonoBehaviour
 	}
 
 	public void voltarMenuPrincipal(){
-		SceneManager.LoadSceneAsync ("jogar");
+		SceneManager.LoadSceneAsync ("Circuito");
 	}
 
 	public void reiniciarFase(){

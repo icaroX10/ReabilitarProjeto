@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -48,7 +49,21 @@ public class SalvaDadosEntreScenes : MonoBehaviour
 		float z = PlayerPrefs.GetFloat ( nome+".z");
 		return new Vector3 (x, y, z);
 	}
-
+	public bool ChecaKeyXYZ(string key){
+		return (
+			PlayerPrefs.HasKey ( key+".x") &&
+			PlayerPrefs.HasKey ( key+".y") &&
+			PlayerPrefs.HasKey ( key+".z")
+		);
+	}
+	public bool EstaCalibrado(){
+		return (
+			ChecaKeyXYZ ("SEEsticado") && // PlayerPrefs.GetFloat("SEEsticado") > 0.0f &&
+			ChecaKeyXYZ ("IDEsticado") && // PlayerPrefs.GetFloat("IDEsticado") > 0.0f &&
+			ChecaKeyXYZ ("SEDobrado") &&  // PlayerPrefs.GetFloat("SEDobrado") > 0.0f &&
+			ChecaKeyXYZ ("IDDobrado") //&&  // PlayerPrefs.GetFloat("IDDobrado") > 0.0f
+		);
+	}
 	public float LerDimensaoMax(){
 		Vector3 seEsticado = cam.WorldToScreenPoint(leXYZCantos("SEEsticado"));
 		Vector3 idEsticado = cam.WorldToScreenPoint(leXYZCantos("IDEsticado"));

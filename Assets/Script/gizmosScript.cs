@@ -18,7 +18,9 @@ public class gizmosScript : MonoBehaviour {
 		go.transform.localPosition = Vector3.zero;
 		go.transform.localScale = new Vector3 (0.3f,0.3f,0.3f);*/
 
-		presoNaTela = GameObject.CreatePrimitive (PrimitiveType.Plane);
+		presoNaTela = new GameObject ();
+
+		//presoNaTela = GameObject.CreatePrimitive (PrimitiveType.Plane);
 		presoNaTela.transform.Rotate (new Vector3(-90.0f,0,0));
 		presoNaTela.transform.localScale = new Vector3 (0.01f,1,0.01f);
 		presoNaTela.transform.position = new Vector3 (0,0,-1);

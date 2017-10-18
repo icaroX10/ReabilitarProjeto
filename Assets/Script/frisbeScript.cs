@@ -4,108 +4,59 @@ using UnityEngine;
 
 public class frisbeScript : MonoBehaviour {
 
-	public GameObject frisbe;
-	public GameObject imTarget;
-	public GameObject cantosVerde;
-	public GameObject cantosVermelho;
-
 	public Camera cam;
 
 	public GameObject kitten;
 
-	public bool isActive;
-	public bool isTrowed;
+	public bool isTrowed = false;
 
 	private GameObject frisbeGO;
-
-	private float dimVerde;
-	private float dimVermelho;
-	private float dimIMTarget;
-
 
 	private Vector3 posInicialFrisbe;
 
 	// Use this for initialization
 	void Start () {
-		frisbeGO = this.gameObject;
-		isTrowed = false;
+		frisbeGO = gameObject;
 
-		this.GetComponent<Rigidbody> ().useGravity = false;
+		GetComponent<Rigidbody> ().useGravity = false;
 
-		posInicialFrisbe = new Vector3 (0, -0.5f, 1);
+		posInicialFrisbe = new Vector3 (0, 0, -2.0f);
 		frisbeGO.transform.position = posInicialFrisbe;
-		//posFinalFrisbe = new Vector3 ();
-
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		//this.transform.LookAt (imTarget.transform.position);
-		atingeTarget();
-
-		if (isActive) {
-			if (isTrowed) {
-				direcionarFrisbe ();
-			} else {
-				/* TODO: Calcular a distância entre as duas molduras a fim de
-				 * posicionar o frisbe entre as duas. Se basear na distância
-				 * que o imTarget possui das duas (utilizar % relativo).
-				 */
-				calculaDimensao ();
-			}
-		} else {
-			frisbeGO.transform.position = Vector3.zero;	
-		}
+		if (isTrowed)
+			direcionarFrisbe ();
 	}
 
-	void calculaDimensao(){
-		Vector3 SupEsqVD = cam.WorldToScreenPoint(cantosVerde.transform.GetChild(0).transform.position);
-		Vector3 InfDirVD = cam.WorldToScreenPoint(cantosVerde.transform.GetChild(1).transform.position);
-
-		Vector3 SupEsqVM = cam.WorldToScreenPoint(cantosVermelho.transform.GetChild(0).transform.position);
-		Vector3 InfDirVM = cam.WorldToScreenPoint(cantosVermelho.transform.GetChild(1).transform.position);
-
-		Vector3 SupEsqIM = cam.WorldToScreenPoint(imTarget.transform.GetChild(0).transform.position);
-		Vector3 InfDirIM = cam.WorldToScreenPoint(imTarget.transform.GetChild(1).transform.position);
-
-		float diagVD = Vector3.Distance (SupEsqVD,InfDirVD);
-		float diagVM = Vector3.Distance (SupEsqVM,InfDirVM);
-		float diagIM = Vector3.Distance (SupEsqIM,InfDirIM);
-
-		if (diagIM < diagVD)
-			frisbeGO.transform.position = posInicialFrisbe;
-		else {
-
-			//float proximidade = diagIM / diagVM;
-			float proximidade = diagIM / diagVD - 1; // Calculando melhor forma de mover o frisbe sem "saltos"
-
-			frisbeGO.transform.position = new Vector3 (posInicialFrisbe.x, posInicialFrisbe.y, posInicialFrisbe.z + 2*proximidade);
-		}
-
-		//print (frisbeGO.transform.position.ToString());
-
-		/* TODO: Identificar uma maneira de posicionar "Longitudinalmente" o objeto no eixo que liga as duas molduras  */
+	public void Posicionar(float porcentagem){
+		// Vector3(0,-1,[2,4])
+		float profundidade = (4-2)*porcentagem+2;
+		transform.position = new Vector3(0,-1,profundidade);
 	}
 
-	public void arremessar(){
-		this.isTrowed = true;
-		//this.GetComponent<Rigidbody> ().useGravity = true;
+	public void Arremessar(){
+		if (isTrowed)
+			return;
+		isTrowed = true;
+		float tempoDeColisao = 1.4f;
 
-		//this.GetComponent<Rigidbody> ().AddForce (new Vector3(0,15.0f,15.0f) * 10.0f, ForceMode.Acceleration);
-		this.GetComponent<Rigidbody> ().AddForce (Vector3.forward * 30.0f, ForceMode.Acceleration);
+		float distance = Vector3.Distance (transform.position, kitten.transform.position);
+		float velocity = distance / tempoDeColisao;
 
+		this.GetComponent<Rigidbody> ().AddForce (Vector3.forward * velocity, ForceMode.VelocityChange);
+
+		StartCoroutine (AnimaComDelay(tempoDeColisao));
+		Destroy (frisbeGO.gameObject, tempoDeColisao+0.1f);
+	}
+
+	IEnumerator AnimaComDelay(float temp){
+		yield return new WaitForSeconds (temp);
+		kitten.GetComponent<KittenScript> ().setaAnimation ("Meow");
 	}
 
 	public void direcionarFrisbe(){
-		//Vector3 direcao = imTarget.transform.position - frisbeGO.transform.position;
-		//this.GetComponent<Rigidbody> ().AddForce (direcao.);
-		this.transform.LookAt(imTarget.transform.position);
-	}
-
-	public void atingeTarget(){
-		if(frisbeGO.transform.position.z > imTarget.transform.position.z){
-			Destroy (frisbeGO.gameObject);
-			kitten.GetComponent<KittenScript> ().setaAnimation ("Meow");					
-		}
+		transform.LookAt(kitten.transform.position);
 	}
 }

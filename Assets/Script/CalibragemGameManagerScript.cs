@@ -56,7 +56,7 @@ public class CalibragemGameManagerScript : MonoBehaviour {
 		}
 
 
-		DEBUGANDO ();
+		//DEBUGANDO ();
 	}
 
 	void OnGUI(){

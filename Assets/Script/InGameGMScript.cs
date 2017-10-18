@@ -13,6 +13,8 @@ public class InGameGMScript : MonoBehaviour
 	public Text balaoMascote;
 	public Text balaoFimPontuacao;
 	public Text balaoFimElogio;
+	public GameObject[] estrelasGold;
+	public GameObject[] estrelasGray;
 	//public GameObject mascoteGuiaGO;
 
 	private MessengerScript messenger;
@@ -24,6 +26,7 @@ public class InGameGMScript : MonoBehaviour
 	private IdentificadorJeb identificaJeb;
 
 	// Bertolino: Série de objetos a serem retirados e convertê-los em List
+	public GameObject kitten;
 	public GameObject frisbe;
 	private GameObject frisbeGO;
 	private frisbeScript frisbeScrpt;
@@ -39,7 +42,7 @@ public class InGameGMScript : MonoBehaviour
 	private float tempoParaMarcadores;
 	private float tempoDeJogoIni;
 
-	private bool teste = false;
+	private bool estaFinalizado = false;
 
 	// Use this for initialization
 	void Start () {
@@ -69,7 +72,7 @@ public class InGameGMScript : MonoBehaviour
 
 		mascoteGuia.InsereBalaoTexto (balaoMascote);
 		mascoteGuia.InsereBalaoFim (balaoFimPontuacao,balaoFimElogio);
-
+		mascoteGuia.InsereEstrelas (estrelasGold, estrelasGray);
 		mascoteGuia.InsereNomesMarcadores (salvador.LerNomesMarcadores());
 
 		imDetector = listaIMTargetScript.LerReadTarget (0);
@@ -85,37 +88,50 @@ public class InGameGMScript : MonoBehaviour
 
 		mascoteGuia.Ativador (true);
 
-		print (Time.time);
+		//print (Time.time);
 
 		CanvasInGame.SetActive (true); CanvasFimGame.SetActive (false);
-		DEBUGAPONTOSDECALIBRAGEM ();
+		//DEBUGAPONTOSDECALIBRAGEM ();
 		tempoParaMarcadores = Time.time + 2.0f;
 		tempoDeJogoIni = Time.time;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		messenger.messengerTxt = "<color=white>"+Time.time.ToString()+ "\nTempoParaMarcadores: "+tempoParaMarcadores.ToString()+" if- "+teste.ToString()+"</color>";
+		//messenger.messengerTxt = "<color=white>"+Time.time.ToString()+ "\nTempoParaMarcadores: "+tempoParaMarcadores.ToString()+" if- "+teste.ToString()+"</color>";
 
 		if (circuitoImpossivel)
 			return;
 
-		if (gerenciadorCircuito.TemProximo ()) {
-			CanvasInGame.SetActive (true); CanvasFimGame.SetActive (false);
-			if (ultimoMarcador != gerenciadorCircuito.MarcadorAtual ()) {
-				print ("Estamos no marcador no: " + gerenciadorCircuito.MarcadorAtual ());
-				listaIMTargetScript.AtivaTarget (gerenciadorCircuito.MarcadorAtual ());
-				mascoteGuia.ApontarMarcador (gerenciadorCircuito.MarcadorAtual ());
-				imDetector = listaIMTargetScript.LerReadTarget (gerenciadorCircuito.MarcadorAtual ());
-				identificaJeb.InsereImTarget (listaIMTargetScript.Get(gerenciadorCircuito.MarcadorAtual ()).gameObject);
-				ultimoMarcador = gerenciadorCircuito.MarcadorAtual ();
-			}
-			if (teste = (tempoParaMarcadores < Time.time)) {
+		if (frisbeGO)
+			frisbeScrpt.gameObject.SetActive(imDetector.isFound);
+		
+		if (tempoParaMarcadores < Time.time) {
+			if (gerenciadorCircuito.TemProximo ()) {
+				CanvasInGame.SetActive (true); CanvasFimGame.SetActive (false);
+				if (ultimoMarcador != gerenciadorCircuito.MarcadorAtual ()) {
+					int marcadorAct = gerenciadorCircuito.MarcadorAtual ();
+					Transform imTarget = listaIMTargetScript.Get (marcadorAct);
+					//print ("Estamos no marcador no: " + marcadorAct);
+					listaIMTargetScript.AtivaTarget (marcadorAct);
+					mascoteGuia.ApontarMarcador (marcadorAct);
+					imDetector = listaIMTargetScript.LerReadTarget (marcadorAct);
+					identificaJeb.InsereImTarget (imTarget.gameObject);
+					criaFrisbe ();
+					atualizaAlvo (imTarget.GetChild(imTarget.childCount-1).gameObject);
+					ultimoMarcador = marcadorAct;
+				}
 				if (imDetector.isFound) {
+					if (!frisbeScrpt.isTrowed)
+						frisbeScrpt.Posicionar (identificaJeb.PorcentagemEsticado());
+
 					if (identificaJeb.DobrouBraco ()) {
 						if (identificaJeb.EsticouBraco ()) {
 							if (identificaJeb.DobrouNovamenteBraco ()) {
+								frisbeScrpt.Arremessar ();
 								gerenciadorCircuito.AvancarPasso ();
+								if (!gerenciadorCircuito.TemProximo ())
+									mascoteGuia.FinalizaPassos ();
 								tempoParaMarcadores = Time.time + 2.0f;
 							} else {
 								mascoteGuia.DobrarBracos ();
@@ -130,16 +146,29 @@ public class InGameGMScript : MonoBehaviour
 					mascoteGuia.ApontarMarcador (gerenciadorCircuito.MarcadorAtual ());
 				}
 			} else {
-				mascoteGuia.AvisaEstagio (gerenciadorCircuito.PassoAtual()+1, gerenciadorCircuito.PassoMaximo());
+				if(!estaFinalizado){
+					CanvasInGame.SetActive (false); CanvasFimGame.SetActive (true);
+					//mascoteGuia.FinalizarFase (tempoDeJogoIni, salvador.LeTempoMaximoFase("####FASEATUAL####"));
+					mascoteGuia.FinalizarFase (tempoDeJogoIni, 60.0f);
+					estaFinalizado = true;
+				}
 			}
 		} else {
-			CanvasInGame.SetActive (false); CanvasFimGame.SetActive (true);
-			mascoteGuia.FinalizarFase (tempoDeJogoIni, salvador.LeTempoMaximoFase("####FASEATUAL####"));
+			if (gerenciadorCircuito.TemProximo ()) {
+				mascoteGuia.AvisaEstagio (gerenciadorCircuito.PassoAtual ()+1, gerenciadorCircuito.PassoMaximo ());
+			}
 		}
+		
+	}
 
-		/*
-		if (frisbeGO)
-			frisbeScrpt.isActive = imDetector.isFound;*/
+	void criaFrisbe(){
+		frisbeGO = Instantiate (frisbe,Vector3.zero, Quaternion.identity) as GameObject;
+		frisbeScrpt = frisbeGO.GetComponent<frisbeScript> ();
+		frisbeScrpt.cam = cam;
+	}
+
+	void atualizaAlvo(GameObject alvo){
+		frisbeScrpt.kitten = alvo;
 	}
 
 	public void voltarMenuPrincipal(){
@@ -147,9 +176,7 @@ public class InGameGMScript : MonoBehaviour
 	}
 
 	public void reiniciarFase(){
-		gerenciadorCircuito.ReiniciarFase ();
-		tempoParaMarcadores = Time.time + 2.0f;
-		tempoDeJogoIni = Time.time;
+		SceneManager.LoadSceneAsync ("ingame");
 	}
 
 	public void debuguguugug(){
@@ -157,22 +184,11 @@ public class InGameGMScript : MonoBehaviour
 		mascoteGuia.FinalizarFase (tempoDeJogoIni, 60.0f);
 		circuitoImpossivel = true;
 	}
-	/* // Bertolino: A retirar para o InGame
-	void criaFrisbe(){
-		frisbeGO = Instantiate (frisbe,Vector3.zero, Quaternion.identity) as GameObject;
-		frisbeScrpt = frisbeGO.GetComponent<frisbeScript> ();
-
-		frisbeScrpt.cam = cam;
-		frisbeScrpt.cantosVerde = CantosDobrado;
-		frisbeScrpt.cantosVermelho = CantosEsticado;
-		frisbeScrpt.imTarget = ImageTarget;
-		frisbeScrpt.kitten = Kitten;
-	}*/
 
 	private void CircuitoInexistente(){
 		messenger.messengerTxt = "<color=white>O circuito inserido é impossível!\nSaia e reinsira o circuito!!!</color>";
 		circuitoImpossivel = true;
-		print ("Circuito impossivel!");
+		//print ("Circuito impossivel!");
 	}
 
 	private void DEBUGAPONTOSDECALIBRAGEM(){

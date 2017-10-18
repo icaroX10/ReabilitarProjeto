@@ -17,7 +17,7 @@ public class IdentificadorJeb : MonoBehaviour {
 
 	private float tempoParaDelay = 0.0f;
 
-	private float precisao = 0.0f;
+	private float precisao = 0.05f;
 
 	private bool checaDobrado = false;
 	private bool checaEsticado = false;
@@ -41,7 +41,7 @@ public class IdentificadorJeb : MonoBehaviour {
 	void Update () {
 		cantoSE = imTarget.transform.GetChild (0).GetChild(0).position;
 		cantoID = imTarget.transform.GetChild (1).GetChild(0).position;
-		DEBUGARTAMANHO ();
+		//DEBUGARTAMANHO ();
 	}
 
 	public void InsereImTarget(GameObject im){
@@ -146,6 +146,11 @@ public class IdentificadorJeb : MonoBehaviour {
 		return (im1 - im0).magnitude;
 	}
 
+	public float PorcentagemEsticado(){
+		float distIM = Vector3.Distance (cantoSE,cantoID);
+		return distIM / dimensaoMax;
+	}
+
 	void DEBUGARTAMANHO(){
 		float dist = Vector3.Distance (cantoSE,cantoID);
 
@@ -153,7 +158,6 @@ public class IdentificadorJeb : MonoBehaviour {
 		Vector3 i2 = cam.WorldToScreenPoint (a2);
 		float dist1 = Vector3.Distance (i1, i2);*/
 
-		this.precisao = 0.05f;
 		//this.precisao = 15.0f;
 
 		messenger.messengerTxt = "<color=magenta>" +

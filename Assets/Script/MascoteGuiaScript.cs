@@ -16,7 +16,8 @@ public class MascoteGuiaScript : MonoBehaviour {
 	private GameObject[] estrelasGray;
 
 	// Mensagens padrão do Mascote
-	const string texto0 = "<color=black>Aponte o dispositivo para o marcador</color> ";
+	//const string texto0 = "<color=black>Aponte o dispositivo para o marcador</color> ";
+	const string texto0 = "<color=black>Aponte o dispositivo para o (a)</color> ";
 	const string texto1 = "<color=magenta>Dobre</color> <color=black>seus braços!</color>";
 	const string texto2 = "<color=lime>Estique</color> <color=black>seus braços!</color>";
 	const string texto3 = "<color=black>Fase <color=lime>concluída</color>!\nClique em sair.</color>";

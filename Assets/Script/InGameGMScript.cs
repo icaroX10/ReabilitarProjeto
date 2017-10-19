@@ -53,11 +53,13 @@ public class InGameGMScript : MonoBehaviour
 		mascoteGuia = gameObject.AddComponent<MascoteGuiaScript> ();
 		identificaJeb = gameObject.AddComponent<IdentificadorJeb> ();
 
+		// turtle -> lion -> cow -> turtle
+
 		// TODO: Deletar quando implementar o substituto -------
-		List<int> x = new List<int>(); x.Add(0); x.Add(1); x.Add(2);
+		List<int> x = new List<int>(); x.Add(0); x.Add(2); x.Add(4); x.Add(0);
 		salvador.SalvarCircuito(x);
 
-		List<string> y = new List<string> (); y.Add ("Leão"); y.Add ("Golfinho"); y.Add ("Besouro");
+		List<string> y = new List<string> (); y.Add ("Tartaruga"); y.Add ("Rinoceronte"); y.Add ("Leão"); y.Add ("Hipopotamo"); y.Add ("Vaca"); y.Add ("Mula");
 		salvador.SalvarNomesMarcadores (y);
 		// FIM: Deletar quando implementar o substituto ------
 
@@ -149,7 +151,7 @@ public class InGameGMScript : MonoBehaviour
 				if(!estaFinalizado){
 					CanvasInGame.SetActive (false); CanvasFimGame.SetActive (true);
 					//mascoteGuia.FinalizarFase (tempoDeJogoIni, salvador.LeTempoMaximoFase("####FASEATUAL####"));
-					mascoteGuia.FinalizarFase (tempoDeJogoIni, 60.0f);
+					mascoteGuia.FinalizarFase (tempoDeJogoIni, 85.0f);
 					estaFinalizado = true;
 				}
 			}

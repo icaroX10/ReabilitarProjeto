@@ -144,5 +144,17 @@ public class SalvaDadosEntreScenes : MonoBehaviour
 		return tempo;
 	}
 	// FIM Códigos para o cálculo da pontuação para a fase
+
+
+	// Códigos para abertura do programa
+	public bool tutorialJaVisto(){
+		return PlayerPrefs.HasKey ("tutorialVisto") &&
+		PlayerPrefs.GetString ("tutorialVisto").Equals ("true");
+	}
+	public void tutorialJaVisto(bool op){
+		PlayerPrefs.SetString ("tutorialVisto", op.ToString());
+		PlayerPrefs.Save ();
+	}
+	// FIM Códigos para abertura do programa
 }
 
